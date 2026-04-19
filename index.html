@@ -14,17 +14,14 @@
   <meta name="apple-mobile-web-app-title" content="Midpoint Meet"/>
   <meta name="theme-color" content="#f8f6f1"/>
 
-  <!-- ============================================================
-       CONFIGURATION — API KEYS
-       ============================================================ -->
-  <script>
+<script>
     const CONFIG = {
       GOOGLE_API_KEY: 'AIzaSyDOw4toIrQFMq4pCLy0muz5W-lOyfHLJJQ'
       TFL_APP_KEY:    '0aa06216004b41c483bbbf50e33af308',
     };
   </script>
 
-<style>
+  <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg:#f8f6f1; --card:#ffffff; --ink:#18181a; --soft:#6b6b72;
@@ -174,11 +171,11 @@
     .err-msg { border:1px solid #e8c0c0; background:#fdf5f5; padding:10px 14px; font-size:13px; color:var(--red); margin-top:8px; border-radius:10px; }
     .empty-state { padding:2.5rem; text-align:center; color:var(--soft); font-size:14px; font-weight:300; font-style:italic; background:var(--card); border-radius:12px; }
     .no-results { padding:1.5rem; text-align:center; color:var(--soft); font-size:13px; background:var(--card); border:var(--rule); border-radius:12px; }
-    .cuisine-wrap { overflow:hidden; max-height:0; transition:max-height .3s ease, opacity .3s ease; opacity:0; }
-    .cuisine-wrap.visible { max-height:200px; opacity:1; }
-    .cuisine-filter { display:flex; flex-wrap:wrap; gap:6px; padding:12px 16px 14px; background:var(--bg); border:var(--rule); border-top:none; border-radius:0 0 12px 12px; }
-    .cuisine-label { font-size:10px; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:var(--soft); padding:10px 16px 4px; background:var(--bg); border-left:var(--rule); border-right:var(--rule); }
-    .cuisine-chip { padding:5px 12px; border:var(--rule); background:var(--card); font-size:12px; font-weight:400; cursor:pointer; color:var(--soft); font-family:'DM Sans',sans-serif; border-radius:20px; transition:all .12s; }
+    .cuisine-wrap { overflow:hidden; max-height:0; transition:max-height .4s ease, opacity .3s ease; opacity:0; }
+    .cuisine-wrap.visible { max-height:400px; opacity:1; }
+    .cuisine-filter { display:flex; flex-wrap:wrap; gap:8px; padding:12px 16px 16px; background:var(--bg); border:var(--rule); border-top:none; border-radius:0 0 12px 12px; }
+    .cuisine-label { font-size:10px; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:var(--soft); padding:10px 16px 6px; background:var(--bg); border-left:var(--rule); border-right:var(--rule); }
+    .cuisine-chip { padding:7px 14px; border:var(--rule); background:var(--card); font-size:13px; font-weight:400; cursor:pointer; color:var(--soft); font-family:'DM Sans',sans-serif; border-radius:20px; transition:all .12s; }
     .cuisine-chip.on { background:var(--ink); color:#fff; border-color:var(--ink); }
     .cuisine-chip:hover:not(.on) { background:var(--faint); color:var(--ink); }
 
