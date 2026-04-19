@@ -18,932 +18,668 @@
     };
   </script>
 
-  <style>
+<style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:      #f8f6f1;
-      --card:    #ffffff;
-      --ink:     #18181a;
-      --soft:    #6b6b72;
-      --faint:   #e8e6e0;
-      --rule:    1px solid #e0ddd5;
-      --accent:  #c17f3c;
-      --accent2: #daa05a;
-      --green:   #2d6a4f;
-      --red:     #b84040;
-      --teal:    #1a7a9e;
-      --radius:  0px;
+      --bg:#f8f6f1; --card:#ffffff; --ink:#18181a; --soft:#6b6b72;
+      --faint:#e8e6e0; --rule:1px solid #e0ddd5; --accent:#c17f3c;
+      --accent2:#daa05a; --green:#2d6a4f; --red:#b84040; --teal:#1a7a9e;
     }
-
     html { scroll-behavior: smooth; }
+    body { background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; min-height:100vh; }
 
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 400;
-      min-height: 100vh;
-    }
+    .hdr { background:var(--card); border-bottom:var(--rule); padding:2rem 1.5rem 1.5rem; display:grid; grid-template-columns:1fr auto; align-items:end; gap:1rem; position:sticky; top:0; z-index:100; border-radius:0 0 16px 16px; }
+    .hdr h1 { font-family:'Libre Baskerville',serif; font-size:clamp(20px,4vw,28px); font-weight:700; letter-spacing:-.5px; line-height:1; }
+    .hdr p { font-size:13px; color:var(--soft); margin-top:5px; font-weight:300; }
+    .hdr-icon { width:42px; height:42px; background:var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .hdr-icon svg { width:20px; height:20px; }
 
-    /* ── HEADER ── */
-    .hdr {
-      background: var(--card);
-      border-bottom: var(--rule);
-      padding: 2.5rem 2rem 2rem;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      gap: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .hdr h1 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: clamp(22px, 4vw, 30px);
-      font-weight: 700;
-      letter-spacing: -.5px;
-      line-height: 1;
-    }
-    .hdr p {
-      font-size: 13px;
-      color: var(--soft);
-      margin-top: 5px;
-      font-weight: 300;
-    }
-    .hdr-icon {
-      width: 44px; height: 44px;
-      background: var(--ink);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .hdr-icon svg { width: 20px; height: 20px; }
+    .page { max-width:680px; margin:0 auto; padding:2rem 1.5rem 4rem; display:flex; flex-direction:column; gap:2.5rem; }
 
-    /* ── LAYOUT ── */
-    .page {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-    }
+    .sec-label { font-size:10px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:var(--soft); margin-bottom:1rem; display:flex; align-items:center; gap:12px; }
+    .sec-label::after { content:''; flex:1; height:1px; background:var(--faint); }
 
-    /* ── SECTION LABELS ── */
-    .sec-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--soft);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .sec-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--faint);
-    }
+    .user-list { display:flex; flex-direction:column; gap:1px; border:var(--rule); background:var(--faint); border-radius:12px; overflow:hidden; }
+    .user-item { background:var(--card); display:grid; grid-template-columns:32px 1fr 28px; gap:12px; align-items:center; padding:14px 16px; transition:background .12s; }
+    .user-item:hover { background:#fcfbf8; }
+    .u-num { font-family:'Libre Baskerville',serif; font-size:11px; color:var(--soft); font-style:italic; text-align:center; }
+    .u-name { font-size:14px; font-weight:500; }
+    .u-loc { font-size:12px; color:var(--soft); font-weight:300; margin-top:1px; }
+    .rm-btn { width:24px; height:24px; border-radius:50%; border:1px solid var(--faint); background:transparent; cursor:pointer; color:var(--soft); font-size:13px; display:flex; align-items:center; justify-content:center; transition:all .12s; }
+    .rm-btn:hover { background:var(--red); color:#fff; border-color:var(--red); }
 
-    /* ── USER LIST ── */
-    .user-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      border: var(--rule);
-      background: var(--faint);
-    }
-    .user-item {
-      background: var(--card);
-      display: grid;
-      grid-template-columns: 32px 1fr 28px;
-      gap: 12px;
-      align-items: center;
-      padding: 14px 16px;
-      transition: background .12s;
-    }
-    .user-item:hover { background: #fcfbf8; }
-    .u-num {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 11px;
-      color: var(--soft);
-      font-style: italic;
-      text-align: center;
-    }
-    .u-name { font-size: 14px; font-weight: 500; }
-    .u-loc  { font-size: 12px; color: var(--soft); font-weight: 300; margin-top: 1px; }
-    .rm-btn {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      border: 1px solid var(--faint);
-      background: transparent;
-      cursor: pointer;
-      color: var(--soft);
-      font-size: 13px;
-      display: flex; align-items: center; justify-content: center;
-      transition: all .12s;
-    }
-    .rm-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+    .add-form { margin-top:10px; display:grid; grid-template-columns:1fr 1fr auto; gap:8px; align-items:end; }
+    .fld { display:flex; flex-direction:column; gap:5px; position:relative; }
+    .fld label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--soft); font-weight:500; }
+    .fld input { height:38px; border:var(--rule); background:var(--card); padding:0 12px; font-size:13px; font-family:'DM Sans',sans-serif; color:var(--ink); outline:none; transition:border-color .15s; width:100%; border-radius:10px; }
+    .fld input:focus { border-color:var(--ink); }
+    .fld input::placeholder { color:#c0bdb5; }
 
-    /* ── ADD FORM ── */
-    .add-form {
-      margin-top: 10px;
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 8px;
-      align-items: end;
-    }
-    .fld { display: flex; flex-direction: column; gap: 5px; }
-    .fld label {
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--soft);
-      font-weight: 500;
-    }
-    .fld input {
-      height: 38px;
-      border: var(--rule);
-      background: var(--card);
-      padding: 0 12px;
-      font-size: 13px;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--ink);
-      outline: none;
-      transition: border-color .15s;
-    }
-    .fld input:focus { border-color: var(--ink); }
-    .fld input::placeholder { color: #c0bdb5; }
-    .add-btn {
-      height: 38px;
-      background: var(--ink);
-      color: #fff;
-      border: none;
-      padding: 0 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity .15s;
-      white-space: nowrap;
-    }
-    .add-btn:hover { opacity: .82; }
+    .ac-list { position:absolute; top:100%; left:0; right:0; background:var(--card); border:var(--rule); border-top:none; z-index:300; max-height:200px; overflow-y:auto; box-shadow:0 4px 12px rgba(0,0,0,.08); border-radius:0 0 10px 10px; }
+    .ac-item { padding:10px 12px; font-size:13px; cursor:pointer; border-bottom:var(--rule); transition:background .1s; }
+    .ac-item:last-child { border-bottom:none; }
+    .ac-item:hover { background:#faf8f2; }
+    .ac-main { font-weight:500; display:block; }
+    .ac-sub { font-size:11px; color:var(--soft); }
 
-    /* ── RADIO GROUP ── */
-    .radio-group {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      border: var(--rule);
-      background: var(--faint);
-    }
-    .radio-row {
-      background: var(--card);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: background .12s;
-      user-select: none;
-    }
-    .radio-row:hover { background: #fcfbf8; }
-    .radio-row.on  { background: #faf8f2; }
-    .r-title { font-size: 14px; color: var(--ink); }
-    .r-sub   { font-size: 12px; color: var(--soft); font-weight: 300; margin-top: 2px; }
-    .radio-dot {
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      border: 1.5px solid var(--faint);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: border-color .15s;
-    }
-    .radio-row.on .radio-dot { border-color: var(--ink); }
-    .radio-fill {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--ink);
-      opacity: 0;
-      transition: opacity .15s;
-    }
-    .radio-row.on .radio-fill { opacity: 1; }
+    .add-btn { height:38px; background:var(--ink); color:#fff; border:none; padding:0 16px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:opacity .15s; white-space:nowrap; border-radius:10px; }
+    .add-btn:hover { opacity:.82; }
 
-    /* ── TOGGLE GROUP ── */
-    .toggle-group {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      border: var(--rule);
-      background: var(--faint);
-    }
-    .toggle-row {
-      background: var(--card);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: background .12s;
-      user-select: none;
-    }
-    .toggle-row:hover { background: #fcfbf8; }
-    .t-title { font-size: 14px; color: var(--ink); }
-    .toggle-ind {
-      width: 36px; height: 20px;
-      border-radius: 10px;
-      background: var(--faint);
-      border: 1px solid #d5d2ca;
-      position: relative;
-      transition: background .2s, border-color .2s;
-      flex-shrink: 0;
-    }
-    .toggle-ind.on { background: var(--ink); border-color: var(--ink); }
-    .toggle-knob {
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: #fff;
-      position: absolute;
-      top: 2px; left: 2px;
-      transition: transform .2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,.2);
-    }
-    .toggle-ind.on .toggle-knob { transform: translateX(16px); }
+    .radio-group { display:flex; flex-direction:column; gap:1px; border:var(--rule); background:var(--faint); border-radius:12px; overflow:hidden; }
+    .radio-row { background:var(--card); display:grid; grid-template-columns:1fr auto; align-items:center; padding:14px 16px; cursor:pointer; transition:background .12s; user-select:none; }
+    .radio-row:hover { background:#fcfbf8; }
+    .radio-row.on { background:#faf8f2; }
+    .r-title { font-size:14px; color:var(--ink); }
+    .r-sub { font-size:12px; color:var(--soft); font-weight:300; margin-top:2px; }
+    .radio-dot { width:18px; height:18px; border-radius:50%; border:1.5px solid var(--faint); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:border-color .15s; }
+    .radio-row.on .radio-dot { border-color:var(--ink); }
+    .radio-fill { width:8px; height:8px; border-radius:50%; background:var(--ink); opacity:0; transition:opacity .15s; }
+    .radio-row.on .radio-fill { opacity:1; }
 
-    /* ── FIND BUTTON ── */
-    .go-btn {
-      width: 100%;
-      height: 52px;
-      background: var(--ink);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-family: 'Libre Baskerville', serif;
-      font-size: 16px;
-      letter-spacing: .5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: opacity .15s;
-    }
-    .go-btn:hover   { opacity: .88; }
-    .go-btn:disabled { opacity: .3; cursor: not-allowed; }
+    .toggle-group { display:flex; flex-direction:column; gap:1px; border:var(--rule); background:var(--faint); border-radius:12px; overflow:hidden; }
+    .toggle-row { background:var(--card); display:grid; grid-template-columns:1fr auto; align-items:center; padding:12px 16px; cursor:pointer; transition:background .12s; user-select:none; }
+    .toggle-row:hover { background:#fcfbf8; }
+    .t-title { font-size:14px; color:var(--ink); }
+    .toggle-ind { width:36px; height:20px; border-radius:10px; background:var(--faint); border:1px solid #d5d2ca; position:relative; transition:background .2s,border-color .2s; flex-shrink:0; }
+    .toggle-ind.on { background:var(--ink); border-color:var(--ink); }
+    .toggle-knob { width:14px; height:14px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    .toggle-ind.on .toggle-knob { transform:translateX(16px); }
 
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      flex-shrink: 0;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .filter-row { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--card); border:var(--rule); border-radius:12px; }
+    .filter-label { font-size:14px; color:var(--ink); flex:1; }
+    .filter-sub { font-size:12px; color:var(--soft); font-weight:300; margin-top:1px; }
+    .star-filter { display:flex; gap:4px; }
+    .star-btn { padding:4px 10px; border:var(--rule); background:var(--bg); font-size:12px; font-weight:500; cursor:pointer; transition:all .12s; color:var(--soft); font-family:'DM Sans',sans-serif; border-radius:20px; }
+    .star-btn.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+    .star-btn:hover:not(.on) { background:var(--faint); }
 
-    /* ── MAP ── */
-    #map {
-      width: 100%;
-      height: 280px;
-      border: var(--rule);
-      background: var(--faint);
-      display: none;
-    }
+    .go-btn { width:100%; height:52px; background:var(--ink); color:#fff; border:none; cursor:pointer; font-family:'Libre Baskerville',serif; font-size:16px; letter-spacing:.5px; display:flex; align-items:center; justify-content:center; gap:10px; transition:opacity .15s; border-radius:14px; }
+    .go-btn:hover { opacity:.88; }
+    .go-btn:disabled { opacity:.3; cursor:not-allowed; }
+    .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; flex-shrink:0; }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
-    /* ── RESULTS ── */
-    .result-meta {
-      border: var(--rule);
-      background: var(--card);
-      padding: 16px;
-      margin-bottom: 1px;
-    }
-    .meta-label {
-      font-size: 10px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--soft);
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
-    .person-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-    .person-row:last-child { margin-bottom: 0; }
-    .p-swatch { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .p-name-sm { font-size: 13px; color: var(--soft); font-weight: 300; flex: 1; }
-    .p-val-sm  { font-size: 13px; color: var(--ink); font-weight: 500; }
+    #map { width:100%; height:280px; border:var(--rule); background:var(--faint); display:none; border-radius:14px; overflow:hidden; }
 
-    .place-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--faint);
-    }
-    .place-item {
-      background: var(--card);
-      padding: 18px 16px;
-      display: grid;
-      grid-template-columns: 28px 1fr 60px;
-      gap: 14px;
-      align-items: start;
-      transition: background .12s;
-    }
-    .place-item:hover { background: #faf8f2; }
-    .place-n {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--faint);
-      line-height: 1;
-      padding-top: 3px;
-      user-select: none;
-    }
-    .place-n.top { color: var(--accent); }
-    .place-name-big {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 5px;
-      line-height: 1.3;
-    }
-    .place-tags {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-bottom: 6px;
-      align-items: center;
-    }
-    .tag {
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 500;
-      padding: 2px 7px;
-      border: 1px solid;
-    }
-    .tag-restaurant { color: var(--accent);  border-color: var(--accent2); }
-    .tag-cafe       { color: var(--green);   border-color: var(--green); }
-    .tag-bar        { color: #5a3a8a;        border-color: #8a6ab8; }
-    .tag-fair       { color: var(--green);   border-color: var(--green); background: #f0f8f4; }
-    .tag-open       { color: var(--green);   border-color: var(--green); }
-    .tag-closed     { color: var(--red);     border-color: var(--red); }
+    .results-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; gap:10px; }
+    .results-hdr .sec-label { margin-bottom:0; flex:1; }
+    .share-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; background:#25D366; color:#fff; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; border-radius:20px; white-space:nowrap; flex-shrink:0; }
+    .share-btn:hover { opacity:.88; }
+    .share-btn svg { width:14px; height:14px; flex-shrink:0; }
 
-    .place-stars    { color: var(--accent); font-size: 12px; letter-spacing: 2px; }
-    .place-revs     { font-size: 11px; color: var(--soft); margin-left: 6px; font-weight: 300; }
-    .place-addr     { font-size: 12px; color: var(--soft); font-weight: 300; margin: 5px 0 8px; }
-    .place-times    { margin-bottom: 10px; }
+    .result-meta { border:var(--rule); background:var(--card); padding:16px; margin-bottom:8px; border-radius:12px; }
+    .meta-label { font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--soft); font-weight:500; margin-bottom:10px; }
+    .person-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .person-row:last-child { margin-bottom:0; }
+    .p-swatch { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .p-name-sm { font-size:13px; color:var(--soft); font-weight:300; flex:1; }
+    .p-val-sm { font-size:13px; color:var(--ink); font-weight:500; }
 
-    .place-links { display: flex; gap: 6px; flex-wrap: wrap; }
-    .lnk {
-      font-size: 11px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 500;
-      padding: 5px 10px;
-      border: 1px solid var(--ink);
-      text-decoration: none;
-      color: var(--ink);
-      transition: all .12s;
-      cursor: pointer;
-    }
-    .lnk:hover      { background: var(--ink); color: #fff; }
-    .lnk-maps       { background: var(--ink); color: #fff; }
-    .lnk-maps:hover { opacity: .82; background: var(--ink); color: #fff; }
+    .place-list { display:flex; flex-direction:column; gap:8px; }
+    .place-item { background:var(--card); padding:18px 16px; display:grid; grid-template-columns:28px 1fr 60px; gap:14px; align-items:start; transition:background .12s; border:var(--rule); border-radius:14px; }
+    .place-item:hover { background:#faf8f2; }
+    .place-n { font-family:'Libre Baskerville',serif; font-size:22px; font-weight:700; color:var(--faint); line-height:1; padding-top:3px; user-select:none; }
+    .place-n.top { color:var(--accent); }
+    .place-name-big { font-size:15px; font-weight:500; margin-bottom:5px; line-height:1.3; }
+    .place-tags { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:6px; align-items:center; }
+    .tag { font-size:10px; letter-spacing:1px; text-transform:uppercase; font-weight:500; padding:3px 9px; border:1px solid; border-radius:20px; }
+    .tag-restaurant { color:var(--accent); border-color:var(--accent2); }
+    .tag-cafe { color:var(--green); border-color:var(--green); }
+    .tag-bar { color:#5a3a8a; border-color:#8a6ab8; }
+    .tag-pub { color:#7a4a1a; border-color:#b8834a; }
+    .tag-tea { color:#2d6a4f; border-color:#5daa85; }
+    .tag-fair { color:var(--green); border-color:var(--green); background:#f0f8f4; }
+    .tag-open { color:var(--green); border-color:var(--green); }
+    .tag-closed { color:var(--red); border-color:var(--red); }
+    .place-stars { color:var(--accent); font-size:12px; letter-spacing:2px; }
+    .place-revs { font-size:11px; color:var(--soft); margin-left:6px; font-weight:300; }
+    .place-addr { font-size:12px; color:var(--soft); font-weight:300; margin:5px 0 8px; }
+    .place-times { margin-bottom:10px; }
+    .place-links { display:flex; gap:6px; flex-wrap:wrap; }
+    .lnk { font-size:11px; letter-spacing:1px; text-transform:uppercase; font-weight:500; padding:6px 12px; border:1px solid var(--ink); text-decoration:none; color:var(--ink); transition:all .12s; cursor:pointer; background:transparent; font-family:'DM Sans',sans-serif; border-radius:20px; }
+    .lnk:hover { background:var(--ink); color:#fff; }
+    .lnk-maps { background:var(--ink); color:#fff; }
+    .lnk-maps:hover { opacity:.82; }
+    .lnk-journey { border-color:var(--teal); color:var(--teal); }
+    .lnk-journey:hover { background:var(--teal); color:#fff; }
 
-    .metric-col     { text-align: right; }
-    .metric-big {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1;
-    }
-    .metric-unit { font-size: 10px; color: var(--soft); letter-spacing: 1px; text-transform: uppercase; }
-    .metric-sub  { font-size: 11px; color: var(--soft); margin-top: 3px; font-weight: 300; }
+    .journey-panel { display:none; margin-top:10px; border:1px solid #cce8f4; background:#f0f8fc; padding:12px 14px; border-radius:10px; }
+    .journey-panel.open { display:block; }
+    .journey-ttl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--teal); font-weight:500; margin-bottom:8px; }
+    .journey-person { margin-bottom:12px; }
+    .journey-person:last-child { margin-bottom:0; }
+    .journey-person-name { font-size:12px; font-weight:500; color:var(--ink); margin-bottom:5px; display:flex; align-items:center; gap:6px; }
+    .journey-step { display:flex; align-items:flex-start; gap:8px; margin-bottom:3px; font-size:12px; color:var(--soft); font-weight:300; line-height:1.4; }
+    .j-dot { width:6px; height:6px; border-radius:50%; background:var(--teal); flex-shrink:0; margin-top:4px; }
+    .journey-total { font-size:11px; color:var(--teal); font-weight:500; margin-top:5px; }
+    .journey-loading { font-size:12px; color:var(--soft); font-style:italic; }
 
-    /* ── MISC ── */
-    .err-msg {
-      border: 1px solid #e8c0c0;
-      background: #fdf5f5;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: var(--red);
-      margin-top: 8px;
-    }
-    .empty-state {
-      padding: 2.5rem;
-      text-align: center;
-      color: var(--soft);
-      font-size: 14px;
-      font-weight: 300;
-      font-style: italic;
-      background: var(--card);
-    }
+    .metric-col { text-align:right; }
+    .metric-big { font-family:'Libre Baskerville',serif; font-size:26px; font-weight:700; color:var(--ink); line-height:1; }
+    .metric-unit { font-size:10px; color:var(--soft); letter-spacing:1px; text-transform:uppercase; }
+    .metric-sub { font-size:11px; color:var(--soft); margin-top:3px; font-weight:300; }
 
-    @media (max-width: 520px) {
-      .add-form { grid-template-columns: 1fr; }
-      .add-btn  { width: 100%; }
-      .place-item { grid-template-columns: 24px 1fr 48px; gap: 10px; }
+    .err-msg { border:1px solid #e8c0c0; background:#fdf5f5; padding:10px 14px; font-size:13px; color:var(--red); margin-top:8px; border-radius:10px; }
+    .empty-state { padding:2.5rem; text-align:center; color:var(--soft); font-size:14px; font-weight:300; font-style:italic; background:var(--card); border-radius:12px; }
+    .no-results { padding:1.5rem; text-align:center; color:var(--soft); font-size:13px; background:var(--card); border:var(--rule); border-radius:12px; }
+
+    @media (max-width:520px) {
+      .add-form { grid-template-columns:1fr; }
+      .add-btn { width:100%; }
+      .place-item { grid-template-columns:24px 1fr 48px; gap:10px; }
+      .results-hdr { flex-direction:column; align-items:flex-start; }
+      .share-btn { width:100%; justify-content:center; }
     }
   </style>
 </head>
 <body>
 
-  <header class="hdr">
-    <div>
-      <h1>Midpoint Meet</h1>
-      <p>Find the fairest spot for everyone in London</p>
+<header class="hdr">
+  <div>
+    <h1>Midpoint Meet</h1>
+    <p>Find the fairest spot for everyone in London</p>
+  </div>
+  <div class="hdr-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#f8f6f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="10" r="3"/>
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+    </svg>
+  </div>
+</header>
+
+<main class="page">
+
+  <section>
+    <div class="sec-label">People</div>
+    <div class="user-list" id="userList"></div>
+    <div class="add-form">
+      <div class="fld">
+        <label>Name</label>
+        <input id="newName" placeholder="e.g. Alice" maxlength="40" autocomplete="off"/>
+      </div>
+      <div class="fld">
+        <label>Location</label>
+        <input id="newLoc" placeholder="SE13 or Brixton" maxlength="100" autocomplete="off"
+               oninput="onLocInput(this)" onblur="hideAC()"/>
+        <div class="ac-list" id="acList" style="display:none"></div>
+      </div>
+      <button class="add-btn" onclick="addUser()">Add</button>
     </div>
-    <div class="hdr-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#f8f6f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="10" r="3"/>
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-      </svg>
+    <div id="addErr" class="err-msg" style="display:none"></div>
+  </section>
+
+  <section>
+    <div class="sec-label">Midpoint method</div>
+    <div class="radio-group" id="mpGroup">
+      <div class="radio-row on" data-mp="distance">
+        <div><div class="r-title">Equal distance</div><div class="r-sub">Geographic centre of all locations</div></div>
+        <div class="radio-dot"><div class="radio-fill"></div></div>
+      </div>
+      <div class="radio-row" data-mp="transit">
+        <div><div class="r-title">Equal travel time</div><div class="r-sub">TfL public transport estimate</div></div>
+        <div class="radio-dot"><div class="radio-fill"></div></div>
+      </div>
     </div>
-  </header>
+  </section>
 
-  <main class="page">
+  <section>
+    <div class="sec-label">Place types</div>
+    <div class="toggle-group">
+      <div class="toggle-row" data-type="restaurant" onclick="toggleType(this)"><div class="t-title">Restaurant</div><div class="toggle-ind on" id="tog-restaurant"><div class="toggle-knob"></div></div></div>
+      <div class="toggle-row" data-type="cafe"       onclick="toggleType(this)"><div class="t-title">Café</div><div class="toggle-ind on" id="tog-cafe"><div class="toggle-knob"></div></div></div>
+      <div class="toggle-row" data-type="pub"        onclick="toggleType(this)"><div class="t-title">Pub</div><div class="toggle-ind" id="tog-pub"><div class="toggle-knob"></div></div></div>
+      <div class="toggle-row" data-type="bar"        onclick="toggleType(this)"><div class="t-title">Bar</div><div class="toggle-ind" id="tog-bar"><div class="toggle-knob"></div></div></div>
+      <div class="toggle-row" data-type="tea"        onclick="toggleType(this)"><div class="t-title">Tea shop</div><div class="toggle-ind" id="tog-tea"><div class="toggle-knob"></div></div></div>
+    </div>
+  </section>
 
-    <!-- PEOPLE -->
-    <section>
-      <div class="sec-label">People</div>
-      <div class="user-list" id="userList"></div>
-      <div class="add-form">
-        <div class="fld">
-          <label>Name</label>
-          <input id="newName" placeholder="e.g. Alice" maxlength="40"/>
-        </div>
-        <div class="fld">
-          <label>Location</label>
-          <input id="newLoc" placeholder="e.g. Brixton, London" maxlength="100"/>
-        </div>
-        <button class="add-btn" onclick="addUser()">Add</button>
+  <section>
+    <div class="sec-label">Filters</div>
+    <div class="filter-row">
+      <div>
+        <div class="filter-label">Minimum rating</div>
+        <div class="filter-sub">Only show places at or above this rating</div>
       </div>
-      <div id="addErr" class="err-msg" style="display:none"></div>
-    </section>
-
-    <!-- MIDPOINT METHOD -->
-    <section>
-      <div class="sec-label">Midpoint method</div>
-      <div class="radio-group" id="mpGroup">
-        <div class="radio-row on" data-mp="distance">
-          <div>
-            <div class="r-title">Equal distance</div>
-            <div class="r-sub">Geographic centre of all locations</div>
-          </div>
-          <div class="radio-dot"><div class="radio-fill"></div></div>
-        </div>
-        <div class="radio-row" data-mp="transit">
-          <div>
-            <div class="r-title">Equal travel time</div>
-            <div class="r-sub">TfL public transport estimate</div>
-          </div>
-          <div class="radio-dot"><div class="radio-fill"></div></div>
-        </div>
+      <div class="star-filter" id="starFilter">
+        <button class="star-btn" data-min="0">Any</button>
+        <button class="star-btn" data-min="3">3+</button>
+        <button class="star-btn on" data-min="4">4+</button>
+        <button class="star-btn" data-min="4.5">4.5+</button>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- PLACE TYPES -->
-    <section>
-      <div class="sec-label">Place types</div>
-      <div class="toggle-group">
-        <div class="toggle-row" data-type="restaurant" onclick="toggleType(this)">
-          <div class="t-title">Restaurant</div>
-          <div class="toggle-ind on" id="tog-restaurant"><div class="toggle-knob"></div></div>
-        </div>
-        <div class="toggle-row" data-type="cafe" onclick="toggleType(this)">
-          <div class="t-title">Café</div>
-          <div class="toggle-ind on" id="tog-cafe"><div class="toggle-knob"></div></div>
-        </div>
-        <div class="toggle-row" data-type="bar" onclick="toggleType(this)">
-          <div class="t-title">Bar</div>
-          <div class="toggle-ind" id="tog-bar"><div class="toggle-knob"></div></div>
-        </div>
-      </div>
-    </section>
+  <button class="go-btn" id="goBtn" onclick="findPlaces()">Find meeting spots</button>
 
-    <!-- GO BUTTON -->
-    <button class="go-btn" id="goBtn" onclick="findPlaces()">
-      Find meeting spots
-    </button>
+  <div id="map"></div>
 
-    <!-- MAP -->
-    <div id="map"></div>
+  <section id="resultsSection" style="display:none">
+    <div class="results-hdr">
+      <div class="sec-label" id="resultsLabel" style="margin-bottom:0;flex:1">Results</div>
+      <button class="share-btn" onclick="shareResults()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.097.544 4.09 1.5 5.832L0 24l6.335-1.652A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.52-5.17-1.425l-.371-.22-3.762.981.999-3.648-.242-.378A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        Share on WhatsApp
+      </button>
+    </div>
+    <div class="result-meta" id="fairInfo"></div>
+    <div class="place-list" id="placeList"></div>
+  </section>
 
-    <!-- RESULTS -->
-    <section id="resultsSection" style="display:none">
-      <div class="sec-label" id="resultsLabel">Results</div>
-      <div class="result-meta" id="fairInfo"></div>
-      <div class="place-list" id="placeList"></div>
-    </section>
+</main>
 
-  </main>
+<script>
+  const SWATCHES = ['#c17f3c','#2d6a4f','#534ab7','#b84040','#1a7a9e','#7a3a8a'];
+  let users = [
+    { id:1, name:'Alice', location:'Shoreditch, London' },
+    { id:2, name:'Bob',   location:'Brixton, London'    },
+  ];
+  let nextId=3, activeTypes=new Set(['restaurant','cafe']), mpMethod='distance', minRating=4;
+  let gMap=null, mapsLoaded=false, acService=null, acTimer=null;
+  let lastResults=[], lastGeocoded=[];
 
-  <!-- Google Maps JS API -->
-  <script>
-    // Dynamically load Maps API with key from CONFIG
-    (function() {
-      const s = document.createElement('script');
-      s.src = `https://maps.googleapis.com/maps/api/js?key=${CONFIG.GOOGLE_API_KEY}&libraries=places&callback=mapsReady`;
-      s.async = true; s.defer = true;
-      document.head.appendChild(s);
-    })();
-  </script>
+  function mapsReady() { mapsLoaded=true; acService=new google.maps.places.AutocompleteService(); }
 
-  <script>
-    // ── STATE ──────────────────────────────────────────────────
-    const SWATCHES = ['#c17f3c','#2d6a4f','#534ab7','#b84040','#1a7a9e','#7a3a8a'];
-    let users = [
-      { id:1, name:'Alice', location:'Shoreditch, London' },
-      { id:2, name:'Bob',   location:'Brixton, London'    },
-    ];
-    let nextId      = 3;
-    let activeTypes = new Set(['restaurant','cafe']);
-    let mpMethod    = 'distance';
-    let gMap        = null;
-    let mapsLoaded  = false;
+  function esc(s) { return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-    function mapsReady() { mapsLoaded = true; }
+  // ── AUTOCOMPLETE ──────────────────────────────────────────
+  function onLocInput(input) {
+    clearTimeout(acTimer);
+    const val = input.value.trim();
+    if (val.length < 2) { hideAC(); return; }
+    acTimer = setTimeout(() => {
+      if (!acService) return;
+      acService.getPlacePredictions({
+        input: val,
+        componentRestrictions: { country: 'gb' },
+        types: ['geocode'],
+      }, (preds, status) => {
+        const list = document.getElementById('acList');
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !preds) { list.style.display='none'; return; }
+        list.innerHTML = preds.slice(0,5).map(p =>
+          `<div class="ac-item" onmousedown="pickAC(event,'${esc(p.description).replace(/'/g,"\\'")}')">
+            <span class="ac-main">${esc(p.structured_formatting.main_text)}</span>
+            <span class="ac-sub">${esc(p.structured_formatting.secondary_text||'')}</span>
+          </div>`).join('');
+        list.style.display = 'block';
+      });
+    }, 280);
+  }
 
-    // ── RENDER USERS ───────────────────────────────────────────
-    function renderUsers() {
-      const el = document.getElementById('userList');
-      if (!users.length) {
-        el.innerHTML = '<div class="empty-state">No one added yet</div>';
-        return;
-      }
-      el.innerHTML = users.map((u, i) => `
-        <div class="user-item">
-          <div class="u-num" style="color:${SWATCHES[i % SWATCHES.length]}">${String(i+1).padStart(2,'0')}</div>
-          <div>
-            <div class="u-name">${esc(u.name)}</div>
-            <div class="u-loc">${esc(u.location)}</div>
-          </div>
-          <button class="rm-btn" onclick="removeUser(${u.id})" title="Remove">×</button>
-        </div>`).join('');
-    }
+  function pickAC(e, value) {
+    e.preventDefault();
+    document.getElementById('newLoc').value = value;
+    document.getElementById('acList').style.display = 'none';
+  }
+  function hideAC() { setTimeout(() => { document.getElementById('acList').style.display='none'; }, 150); }
 
-    function addUser() {
-      const name = document.getElementById('newName').value.trim();
-      const loc  = document.getElementById('newLoc').value.trim();
-      const err  = document.getElementById('addErr');
-      if (!name || !loc) {
-        err.textContent = 'Please enter both a name and a location.';
-        err.style.display = 'block'; return;
-      }
-      err.style.display = 'none';
-      users.push({ id: nextId++, name, location: loc });
-      document.getElementById('newName').value = '';
-      document.getElementById('newLoc').value  = '';
-      renderUsers();
-    }
-    function removeUser(id) { users = users.filter(u => u.id !== id); renderUsers(); }
-    document.getElementById('newLoc').addEventListener('keydown', e => { if (e.key === 'Enter') addUser(); });
+  // ── USERS ─────────────────────────────────────────────────
+  function renderUsers() {
+    const el = document.getElementById('userList');
+    if (!users.length) { el.innerHTML='<div class="empty-state">No one added yet</div>'; return; }
+    el.innerHTML = users.map((u,i) => `
+      <div class="user-item">
+        <div class="u-num" style="color:${SWATCHES[i%SWATCHES.length]}">${String(i+1).padStart(2,'0')}</div>
+        <div><div class="u-name">${esc(u.name)}</div><div class="u-loc">${esc(u.location)}</div></div>
+        <button class="rm-btn" onclick="removeUser(${u.id})">×</button>
+      </div>`).join('');
+  }
+  function addUser() {
+    const name=document.getElementById('newName').value.trim();
+    const loc=document.getElementById('newLoc').value.trim();
+    const err=document.getElementById('addErr');
+    if (!name||!loc) { err.textContent='Please enter both a name and a location.'; err.style.display='block'; return; }
+    err.style.display='none';
+    users.push({id:nextId++,name,location:loc});
+    document.getElementById('newName').value='';
+    document.getElementById('newLoc').value='';
+    renderUsers();
+  }
+  function removeUser(id) { users=users.filter(u=>u.id!==id); renderUsers(); }
+  document.getElementById('newLoc').addEventListener('keydown', e => { if(e.key==='Enter') addUser(); });
 
-    // ── MIDPOINT TOGGLE ────────────────────────────────────────
-    document.getElementById('mpGroup').addEventListener('click', e => {
-      const row = e.target.closest('.radio-row'); if (!row) return;
-      document.querySelectorAll('.radio-row').forEach(r => r.classList.remove('on'));
-      row.classList.add('on');
-      mpMethod = row.dataset.mp;
+  document.getElementById('mpGroup').addEventListener('click', e => {
+    const row=e.target.closest('.radio-row'); if(!row) return;
+    document.querySelectorAll('.radio-row').forEach(r=>r.classList.remove('on'));
+    row.classList.add('on'); mpMethod=row.dataset.mp;
+  });
+  function toggleType(row) {
+    const t=row.dataset.type, ind=document.getElementById('tog-'+t);
+    if (activeTypes.has(t)) { activeTypes.delete(t); ind.classList.remove('on'); }
+    else { activeTypes.add(t); ind.classList.add('on'); }
+  }
+  document.getElementById('starFilter').addEventListener('click', e => {
+    const btn=e.target.closest('.star-btn'); if(!btn) return;
+    document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on'); minRating=parseFloat(btn.dataset.min);
+  });
+
+  // ── GEO HELPERS ───────────────────────────────────────────
+  function geocodeAddress(address) {
+    return new Promise((resolve, reject) => {
+      const geocoder = new google.maps.Geocoder();
+      const q = address.toLowerCase().includes('london') ? address : address+', London, UK';
+      geocoder.geocode({address:q, region:'gb'}, (results, status) => {
+        if (status==='OK'&&results.length) {
+          const loc=results[0].geometry.location;
+          resolve({lat:loc.lat(), lng:loc.lng(), formatted:results[0].formatted_address});
+        } else { reject(new Error(`Could not find: "${address}"`)); }
+      });
     });
+  }
+  function geoMid(coords) {
+    let x=0,y=0,z=0;
+    for (const c of coords){const la=c.lat*Math.PI/180,lo=c.lng*Math.PI/180;x+=Math.cos(la)*Math.cos(lo);y+=Math.cos(la)*Math.sin(lo);z+=Math.sin(la);}
+    x/=coords.length;y/=coords.length;z/=coords.length;
+    return{lat:Math.atan2(z,Math.sqrt(x*x+y*y))*180/Math.PI,lng:Math.atan2(y,x)*180/Math.PI};
+  }
+  function haversine(a,b) {
+    const R=6371,dLa=(b.lat-a.lat)*Math.PI/180,dLo=(b.lng-a.lng)*Math.PI/180;
+    const s=Math.sin(dLa/2)**2+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLo/2)**2;
+    return R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));
+  }
+  function estimateTransit(a,b) {
+    const d=haversine(a,b)*1000;
+    if(d<500)return Math.round(8+d/80);if(d<2000)return Math.round(10+d/200);
+    if(d<8000)return Math.round(15+d/350);return Math.round(20+d/600);
+  }
+  async function transitMid(coords) {
+    const geo=geoMid(coords);
 
-    function toggleType(row) {
-      const t   = row.dataset.type;
-      const ind = document.getElementById('tog-' + t);
-      if (activeTypes.has(t)) { activeTypes.delete(t); ind.classList.remove('on'); }
-      else                    { activeTypes.add(t);    ind.classList.add('on');    }
+    // Pass 1: coarse 3x3 grid using local estimates (instant, no API calls)
+    const coarseOff=[-0.03,0,0.03];
+    let best=null,bestScore=Infinity;
+    for(const dLa of coarseOff)for(const dLo of coarseOff){
+      const c={lat:geo.lat+dLa,lng:geo.lng+dLo};
+      const times=coords.map(x=>estimateTransit(x,c));
+      const avg=times.reduce((a,b)=>a+b,0)/times.length;
+      const variance=times.reduce((s,t)=>s+(t-avg)**2,0)/times.length;
+      const score=variance+avg*.3;
+      if(score<bestScore){bestScore=score;best={...c,times,avg};}
     }
 
-    // ── GEOCODING via Google ───────────────────────────────────
-    function geocodeAddress(address) {
-      return new Promise((resolve, reject) => {
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address: address + ', London, UK' }, (results, status) => {
-          if (status === 'OK' && results.length) {
-            const loc = results[0].geometry.location;
-            resolve({ lat: loc.lat(), lng: loc.lng(), formatted: results[0].formatted_address });
-          } else {
-            reject(new Error(`Could not find location: "${address}"`));
-          }
+    // Pass 2: fine 3x3 grid around the best candidate, still using estimates
+    const fineOff=[-0.015,0,0.015];
+    for(const dLa of fineOff)for(const dLo of fineOff){
+      const c={lat:best.lat+dLa,lng:best.lng+dLo};
+      const times=coords.map(x=>estimateTransit(x,c));
+      const avg=times.reduce((a,b)=>a+b,0)/times.length;
+      const variance=times.reduce((s,t)=>s+(t-avg)**2,0)/times.length;
+      const score=variance+avg*.3;
+      if(score<bestScore){bestScore=score;best={...c,times,avg};}
+    }
+
+    // Pass 3: single TfL call on the winner to get real times (1 call per person)
+    if(CONFIG.TFL_APP_KEY){
+      try{
+        const realTimes=await Promise.all(
+          coords.map(c=>tflJourney(c,best).then(j=>j?j.duration:estimateTransit(c,best)))
+        );
+        const avg=realTimes.reduce((a,b)=>a+b,0)/realTimes.length;
+        best={...best,times:realTimes,avg};
+      }catch(e){}
+    }
+
+    return best;
+  }
+
+  // ── TfL JOURNEY ───────────────────────────────────────────
+  async function tflJourney(from, to) {
+    try {
+      const key = CONFIG.TFL_APP_KEY ? `&app_key=${CONFIG.TFL_APP_KEY}` : '';
+      const url = `https://api.tfl.gov.uk/Journey/JourneyResults/${from.lat},${from.lng}/to/${to.lat},${to.lng}?mode=tube,bus,overground,elizabeth-line,walking${key}`;
+      const r = await fetch(url);
+      const d = await r.json();
+      if (d.journeys&&d.journeys.length) {
+        const j=d.journeys[0];
+        const steps=j.legs.map(leg=>{
+          const mode=leg.mode?leg.mode.name:'walk';
+          const from=leg.departurePoint?leg.departurePoint.commonName:'';
+          const to=leg.arrivalPoint?leg.arrivalPoint.commonName:'';
+          const line=leg.routeOptions&&leg.routeOptions.length?leg.routeOptions[0].name:'';
+          if(mode==='walking')return`Walk ${leg.duration} min`;
+          return`${cap(mode)}${line?' '+line:''}: ${from} → ${to} (${leg.duration} min)`;
         });
-      });
-    }
-
-    // ── MATH HELPERS ──────────────────────────────────────────
-    function geoMid(coords) {
-      let x = 0, y = 0, z = 0;
-      for (const c of coords) {
-        const la = c.lat * Math.PI / 180, lo = c.lng * Math.PI / 180;
-        x += Math.cos(la) * Math.cos(lo); y += Math.cos(la) * Math.sin(lo); z += Math.sin(la);
+        return{duration:j.duration,steps};
       }
-      x /= coords.length; y /= coords.length; z /= coords.length;
-      return { lat: Math.atan2(z, Math.sqrt(x*x+y*y)) * 180/Math.PI, lng: Math.atan2(y, x) * 180/Math.PI };
-    }
+    } catch(e){}
+    return null;
+  }
+  function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'';}
 
-    function haversine(a, b) {
-      const R = 6371, dLa = (b.lat-a.lat)*Math.PI/180, dLo = (b.lng-a.lng)*Math.PI/180;
-      const s = Math.sin(dLa/2)**2 + Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLo/2)**2;
-      return R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
-    }
-
-    // ── TfL TRANSIT TIME ──────────────────────────────────────
-    async function tflTransitMinutes(from, to) {
-      if (!CONFIG.TFL_APP_KEY) return estimateTransit(from, to);
-      try {
-        const url = `https://api.tfl.gov.uk/Journey/JourneyResults/${from.lat},${from.lng}/to/${to.lat},${to.lng}?app_key=${CONFIG.TFL_APP_KEY}&mode=tube,bus,overground,elizabeth-line,walking`;
-        const r = await fetch(url);
-        const d = await r.json();
-        if (d.journeys && d.journeys.length) return d.journeys[0].duration;
-      } catch(e) {}
-      return estimateTransit(from, to);
-    }
-
-    function estimateTransit(a, b) {
-      const d = haversine(a, b) * 1000;
-      if (d < 500)  return Math.round(8  + d / 80);
-      if (d < 2000) return Math.round(10 + d / 200);
-      if (d < 8000) return Math.round(15 + d / 350);
-      return Math.round(20 + d / 600);
-    }
-
-    async function transitMid(coords) {
-      const geo = geoMid(coords);
-      const offsets = [-0.04, -0.02, 0, 0.02, 0.04];
-      let best = null, bestScore = Infinity;
-      for (const dLa of offsets) for (const dLo of offsets) {
-        const c = { lat: geo.lat + dLa, lng: geo.lng + dLo };
-        const times = await Promise.all(coords.map(x => tflTransitMinutes(x, c)));
-        const avg = times.reduce((a,b) => a+b, 0) / times.length;
-        const variance = times.reduce((s,t) => s+(t-avg)**2, 0) / times.length;
-        const score = variance + avg * 0.3;
-        if (score < bestScore) { bestScore = score; best = { ...c, times, avg }; }
-      }
-      return best;
-    }
-
-    // ── GOOGLE PLACES SEARCH ──────────────────────────────────
-    function searchNearby(lat, lng, type) {
-      return new Promise((resolve) => {
-        const mapDiv = document.createElement('div');
-        const svc = new google.maps.places.PlacesService(mapDiv);
-        const typeMap = { restaurant: 'restaurant', cafe: 'cafe', bar: 'bar' };
-        svc.nearbySearch({
-          location: { lat, lng },
-          radius: 2500,
-          type: typeMap[type],
-        }, (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            resolve(results.map(p => ({
-              id:        p.place_id,
-              name:      p.name,
-              type,
-              lat:       p.geometry.location.lat(),
-              lng:       p.geometry.location.lng(),
-              address:   p.vicinity || '',
-              rating:    p.rating || null,
-              reviews:   p.user_ratings_total || 0,
-              open:      p.opening_hours ? p.opening_hours.open_now : null,
-              photo:     p.photos && p.photos.length ? p.photos[0].getUrl({maxWidth:400}) : null,
-              placeId:   p.place_id,
-            })));
-          } else {
-            resolve([]);
-          }
-        });
+  // ── PLACES SEARCH ─────────────────────────────────────────
+  function searchNearby(lat,lng,type) {
+    return new Promise(resolve=>{
+      const svc=new google.maps.places.PlacesService(document.createElement('div'));
+      const typeMap={restaurant:'restaurant',cafe:'cafe',bar:'bar',pub:'bar',tea:'cafe'};
+      const kwMap={pub:'pub',tea:'tea shop'};
+      const params={location:{lat,lng},radius:2500,type:typeMap[type]||type};
+      if(kwMap[type])params.keyword=kwMap[type];
+      svc.nearbySearch(params,(results,status)=>{
+        if(status===google.maps.places.PlacesServiceStatus.OK&&results){
+          resolve(results.map(p=>({
+            id:p.place_id,name:p.name,type,
+            lat:p.geometry.location.lat(),lng:p.geometry.location.lng(),
+            address:p.vicinity||'',rating:p.rating||null,
+            reviews:p.user_ratings_total||0,
+            open:p.opening_hours?p.opening_hours.open_now:null,
+            placeId:p.place_id,
+          })));
+        } else resolve([]);
       });
-    }
+    });
+  }
 
-    // ── DRAW MAP ──────────────────────────────────────────────
-    function drawMap(geocoded, mid, places) {
-      const mapEl = document.getElementById('map');
-      mapEl.style.display = 'block';
-      if (!gMap) {
-        gMap = new google.maps.Map(mapEl, {
-          zoom: 12,
-          center: { lat: mid.lat, lng: mid.lng },
-          styles: [
-            { elementType:'geometry', stylers:[{color:'#f5f3ee'}] },
-            { featureType:'road',     elementType:'geometry', stylers:[{color:'#ffffff'}] },
-            { featureType:'water',    elementType:'geometry', stylers:[{color:'#d8e8f0'}] },
-            { featureType:'poi',      stylers:[{visibility:'off'}] },
-            { featureType:'transit',  stylers:[{visibility:'simplified'}] },
-          ],
-          disableDefaultUI: true,
-          zoomControl: true,
-        });
+  function getFullAddress(placeId) {
+    return new Promise(resolve=>{
+      const svc=new google.maps.places.PlacesService(document.createElement('div'));
+      svc.getDetails({placeId,fields:['formatted_address']},(result,status)=>{
+        resolve(status===google.maps.places.PlacesServiceStatus.OK&&result?result.formatted_address:'');
+      });
+    });
+  }
+
+  // ── MAP ───────────────────────────────────────────────────
+  function drawMap(geocoded,mid,places) {
+    const mapEl=document.getElementById('map');
+    mapEl.style.display='block';
+    if(!gMap){
+      gMap=new google.maps.Map(mapEl,{
+        zoom:12,center:{lat:mid.lat,lng:mid.lng},
+        styles:[
+          {elementType:'geometry',stylers:[{color:'#f5f3ee'}]},
+          {featureType:'road',elementType:'geometry',stylers:[{color:'#ffffff'}]},
+          {featureType:'water',elementType:'geometry',stylers:[{color:'#d8e8f0'}]},
+          {featureType:'poi',stylers:[{visibility:'off'}]},
+        ],
+        disableDefaultUI:true,zoomControl:true,
+      });
+    } else { gMap.setCenter({lat:mid.lat,lng:mid.lng}); }
+    geocoded.forEach((g,i)=>{
+      new google.maps.Marker({map:gMap,position:{lat:g.lat,lng:g.lng},
+        label:{text:users[i].name[0],color:'#fff',fontWeight:'700',fontSize:'12px'},
+        icon:{path:google.maps.SymbolPath.CIRCLE,scale:14,fillColor:SWATCHES[i%SWATCHES.length],fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
+        title:users[i].name,zIndex:10});
+    });
+    new google.maps.Marker({map:gMap,position:{lat:mid.lat,lng:mid.lng},
+      icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:'#18181a',fillOpacity:1,strokeColor:'#f8f6f1',strokeWeight:2},
+      title:'Midpoint',zIndex:9});
+    places.slice(0,5).forEach((p,i)=>{
+      new google.maps.Marker({map:gMap,position:{lat:p.lat,lng:p.lng},
+        label:{text:String(i+1),color:'#18181a',fontWeight:'700',fontSize:'11px'},
+        icon:{path:google.maps.SymbolPath.CIRCLE,scale:13,fillColor:'#e8a820',fillOpacity:1,strokeColor:'#18181a',strokeWeight:1.5},
+        title:p.name,zIndex:8});
+    });
+    const bounds=new google.maps.LatLngBounds();
+    geocoded.forEach(g=>bounds.extend({lat:g.lat,lng:g.lng}));
+    places.slice(0,5).forEach(p=>bounds.extend({lat:p.lat,lng:p.lng}));
+    gMap.fitBounds(bounds,{top:40,right:40,bottom:40,left:40});
+  }
+
+  // ── LINKS ─────────────────────────────────────────────────
+  function mapsUrl(p){return`https://www.google.com/maps/place/?q=place_id:${p.placeId}`;}
+  function dirUrl(p,origins){return`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(p.lat+','+p.lng)}&waypoints=${origins.map(o=>encodeURIComponent(o.lat+','+o.lng)).join('|')}&travelmode=transit`;}
+  function starsStr(r){const f=Math.floor(r);let s='';for(let i=0;i<5;i++)s+=i<f?'●':'○';return s;}
+
+  // ── SHARE ─────────────────────────────────────────────────
+  function shareResults() {
+    if(!lastResults.length){alert('Run a search first!');return;}
+    const lines=['📍 *Midpoint Meet Results*\n'];
+    lines.push(`👥 ${users.map(u=>u.name).join(' + ')}`);
+    lines.push(`📐 ${mpMethod==='transit'?'Equal travel time':'Equal distance'}\n`);
+    lastResults.slice(0,5).forEach((p,i)=>{
+      lines.push(`*${i+1}. ${p.name}*`);
+      if(p.rating)lines.push(`⭐ ${p.rating} (${p.reviews.toLocaleString()} reviews)`);
+      if(p.displayAddr)lines.push(`📌 ${p.displayAddr}`);
+      lines.push(`⏱ ~${Math.round(p.avgT)} min avg · max ${Math.round(p.maxT)} min`);
+      lines.push(`🗺 ${mapsUrl(p)}\n`);
+    });
+    lines.push(`_Found with Midpoint Meet_`);
+    window.open(`https://wa.me/?text=${encodeURIComponent(lines.join('\n'))}`, '_blank');
+  }
+
+  // ── TfL JOURNEY TOGGLE ────────────────────────────────────
+  async function toggleJourney(placeId, placeLat, placeLng, btn) {
+    const panel=document.getElementById('jp-'+placeId);
+    if(panel.classList.contains('open')){
+      panel.classList.remove('open'); btn.textContent='TfL Journey'; return;
+    }
+    panel.classList.add('open'); btn.textContent='Hide journey';
+    if(panel.dataset.loaded)return;
+    panel.dataset.loaded='1';
+    panel.innerHTML=`<div class="journey-ttl">TfL suggested routes</div><div class="journey-loading">Loading…</div>`;
+    const dest={lat:placeLat,lng:placeLng};
+    const results=await Promise.all(users.map((u,i)=>tflJourney(lastGeocoded[i],dest).then(j=>({u,j,i}))));
+    let html=`<div class="journey-ttl">TfL suggested routes</div>`;
+    for(const{u,j,i}of results){
+      const sw=SWATCHES[i%SWATCHES.length];
+      html+=`<div class="journey-person"><div class="journey-person-name"><div class="p-swatch" style="background:${sw};width:8px;height:8px;border-radius:50%;flex-shrink:0"></div>${esc(u.name)}</div>`;
+      if(j){
+        j.steps.forEach(s=>{html+=`<div class="journey-step"><div class="j-dot"></div><span>${esc(s)}</span></div>`;});
+        html+=`<div class="journey-total">Total: ${j.duration} min</div>`;
       } else {
-        gMap.setCenter({ lat: mid.lat, lng: mid.lng });
+        html+=`<div class="journey-step"><div class="j-dot"></div><span>~${estimateTransit(lastGeocoded[i],dest)} min estimated</span></div>`;
       }
+      html+=`</div>`;
+    }
+    panel.innerHTML=html;
+  }
 
-      // People markers
-      geocoded.forEach((g, i) => {
-        new google.maps.Marker({
-          map: gMap,
-          position: { lat: g.lat, lng: g.lng },
-          label: { text: users[i].name[0], color: '#fff', fontWeight: '700', fontSize: '12px' },
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 14,
-            fillColor: SWATCHES[i % SWATCHES.length],
-            fillOpacity: 1,
-            strokeColor: '#fff',
-            strokeWeight: 2,
-          },
-          title: users[i].name,
-          zIndex: 10,
-        });
+  // ── MAIN FIND ─────────────────────────────────────────────
+  async function findPlaces() {
+    if(!mapsLoaded){alert('Maps still loading, please wait.');return;}
+    if(users.length<2){alert('Add at least 2 people.');return;}
+    if(!activeTypes.size){alert('Select at least one place type.');return;}
+    const btn=document.getElementById('goBtn');
+    btn.disabled=true; btn.innerHTML='<div class="spinner"></div>';
+    document.getElementById('resultsSection').style.display='none';
+    try{
+      btn.innerHTML='<div class="spinner"></div> Locating everyone…';
+      const geocoded=await Promise.all(users.map(u=>geocodeAddress(u.location)));
+      lastGeocoded=geocoded;
+
+      let mid,tTimes=null;
+      if(mpMethod==='transit'){
+        btn.innerHTML=`<div class="spinner"></div> Finding fairest midpoint for ${users.length} people…`;
+        const td=await transitMid(geocoded); mid=td; tTimes=td.times;
+      } else { mid=geoMid(geocoded); }
+
+      btn.innerHTML='<div class="spinner"></div> Searching nearby…';
+      const allRes=await Promise.all([...activeTypes].map(t=>searchNearby(mid.lat,mid.lng,t)));
+      let places=allRes.flat();
+      const seen=new Set();
+      places=places.filter(p=>{if(seen.has(p.name))return false;seen.add(p.name);return true;});
+      places=places.map(p=>{
+        const perT=geocoded.map(g=>estimateTransit(g,{lat:p.lat,lng:p.lng}));
+        const avgT=perT.reduce((a,b)=>a+b,0)/perT.length;
+        const maxT=Math.max(...perT);
+        const varT=perT.reduce((s,t)=>s+(t-avgT)**2,0)/perT.length;
+        return{...p,perT,avgT,maxT,varT,dist:haversine(mid,{lat:p.lat,lng:p.lng})};
       });
 
-      // Midpoint marker
-      new google.maps.Marker({
-        map: gMap,
-        position: { lat: mid.lat, lng: mid.lng },
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10,
-          fillColor: '#18181a',
-          fillOpacity: 1,
-          strokeColor: '#f8f6f1',
-          strokeWeight: 2,
-        },
-        title: 'Midpoint',
-        zIndex: 9,
-      });
+      // Rating filter
+      places=places.filter(p=>minRating===0||!p.rating||p.rating>=minRating);
+      places.sort((a,b)=>mpMethod==='transit'?a.varT-b.varT||a.avgT-b.avgT:a.dist-b.dist);
+      places=places.slice(0,10);
 
-      // Place markers (top 5)
-      places.slice(0, 5).forEach((p, i) => {
-        new google.maps.Marker({
-          map: gMap,
-          position: { lat: p.lat, lng: p.lng },
-          label: { text: String(i+1), color: '#18181a', fontWeight:'700', fontSize:'11px' },
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 13,
-            fillColor: '#e8a820',
-            fillOpacity: 1,
-            strokeColor: '#18181a',
-            strokeWeight: 1.5,
-          },
-          title: p.name,
-          zIndex: 8,
-        });
-      });
+      // Full addresses with postcodes — top 5 only, 3s timeout fallback per place
+      btn.innerHTML='<div class="spinner"></div> Fetching addresses…';
+      await Promise.all(places.slice(0,5).map(async p=>{
+        const timeout=new Promise(r=>setTimeout(()=>r(''),3000));
+        const full=await Promise.race([getFullAddress(p.placeId),timeout]);
+        p.displayAddr=full||p.address;
+      }));
+      places.slice(5).forEach(p=>{ p.displayAddr=p.address; });
 
-      // Fit all points
-      const bounds = new google.maps.LatLngBounds();
-      geocoded.forEach(g => bounds.extend({ lat: g.lat, lng: g.lng }));
-      places.slice(0,5).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
-      gMap.fitBounds(bounds, { top:40, right:40, bottom:40, left:40 });
-    }
+      lastResults=places;
+      drawMap(geocoded,mid,places);
 
-    // ── LINK HELPERS ──────────────────────────────────────────
-    function mapsUrl(p)   { return `https://www.google.com/maps/place/?q=place_id:${p.placeId}`; }
-    function reviewsUrl(p){ return `https://search.google.com/local/reviews?placeid=${p.placeId}`; }
-    function dirUrl(p, origins) {
-      const dest = encodeURIComponent(p.lat + ',' + p.lng);
-      const wp   = origins.map(o => encodeURIComponent(o.lat + ',' + o.lng)).join('|');
-      return `https://www.google.com/maps/dir/?api=1&destination=${dest}&waypoints=${wp}&travelmode=transit`;
-    }
+      // Fairness summary
+      const origins=geocoded.map(g=>({lat:g.lat,lng:g.lng}));
+      const fairRows=users.map((u,i)=>{
+        const sw=SWATCHES[i%SWATCHES.length];
+        const val=mpMethod==='transit'&&tTimes?`${Math.round(tTimes[i])} min transit`:`${haversine(geocoded[i],mid).toFixed(1)} km`;
+        return`<div class="person-row"><div class="p-swatch" style="background:${sw}"></div><span class="p-name-sm">${esc(u.name)}</span><span class="p-val-sm">${val}</span></div>`;
+      }).join('');
+      document.getElementById('fairInfo').innerHTML=`<div class="meta-label">${mpMethod==='transit'?'Estimated transit to midpoint':'Distance to midpoint'}</div>${fairRows}`;
+      document.getElementById('resultsLabel').textContent=`Results — ${places.length} place${places.length!==1?'s':''}`;
 
-    function starsStr(r) {
-      if (!r) return '';
-      const full = Math.floor(r); let s = '';
-      for (let i = 0; i < 5; i++) s += i < full ? '●' : '○';
-      return s;
-    }
-
-    function esc(s) {
-      return String(s).replace(/[&<>"']/g, c =>
-        ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    }
-
-    // ── MAIN FIND ─────────────────────────────────────────────
-    async function findPlaces() {
-      if (!mapsLoaded) { alert('Google Maps is still loading — please wait a moment.'); return; }
-      if (users.length < 2) { alert('Please add at least 2 people.'); return; }
-      if (!activeTypes.size) { alert('Please select at least one place type.'); return; }
-
-      const btn = document.getElementById('goBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<div class="spinner"></div>';
-      document.getElementById('resultsSection').style.display = 'none';
-
-      try {
-        // 1. Geocode everyone
-        const geocoded = await Promise.all(users.map(u => geocodeAddress(u.location)));
-
-        // 2. Find midpoint
-        let mid, tTimes = null;
-        if (mpMethod === 'transit') {
-          btn.innerHTML = '<div class="spinner"></div> Calculating transit times…';
-          const td = await transitMid(geocoded);
-          mid = td; tTimes = td.times;
-        } else {
-          mid = geoMid(geocoded);
-        }
-
-        // 3. Search places
-        btn.innerHTML = '<div class="spinner"></div> Searching nearby…';
-        const allResults = await Promise.all([...activeTypes].map(t => searchNearby(mid.lat, mid.lng, t)));
-        let places = allResults.flat();
-
-        // 4. Dedupe + score
-        const seen = new Set();
-        places = places.filter(p => { if (seen.has(p.name)) return false; seen.add(p.name); return true; });
-        places = places.map(p => {
-          const perT   = geocoded.map(g => estimateTransit(g, { lat: p.lat, lng: p.lng }));
-          const avgT   = perT.reduce((a,b) => a+b, 0) / perT.length;
-          const maxT   = Math.max(...perT);
-          const varT   = perT.reduce((s,t) => s+(t-avgT)**2, 0) / perT.length;
-          const dist   = haversine(mid, { lat: p.lat, lng: p.lng });
-          return { ...p, perT, avgT, maxT, varT, dist };
-        });
-        places.sort((a, b) => mpMethod === 'transit' ? a.varT - b.varT || a.avgT - b.avgT : a.dist - b.dist);
-        places = places.slice(0, 10);
-
-        // 5. Draw map
-        drawMap(geocoded, mid, places);
-
-        // 6. Render fairness summary
-        const origins = geocoded.map(g => ({ lat: g.lat, lng: g.lng }));
-        const fairRows = users.map((u, i) => {
-          const sw  = SWATCHES[i % SWATCHES.length];
-          const val = mpMethod === 'transit' && tTimes
-            ? `${Math.round(tTimes[i])} min transit`
-            : `${haversine(geocoded[i], mid).toFixed(1)} km`;
-          return `<div class="person-row">
-            <div class="p-swatch" style="background:${sw}"></div>
-            <span class="p-name-sm">${esc(u.name)}</span>
-            <span class="p-val-sm">${val}</span>
+      if(!places.length){
+        document.getElementById('placeList').innerHTML=`<div class="no-results">No places found matching your filters. Try lowering the minimum rating or enabling more place types.</div>`;
+      } else {
+        const typeLabels={restaurant:'Restaurant',cafe:'Café',bar:'Bar',pub:'Pub',tea:'Tea shop'};
+        document.getElementById('placeList').innerHTML=places.map((p,i)=>{
+          const openTag=p.open===true?'<span class="tag tag-open">Open now</span>':p.open===false?'<span class="tag tag-closed">Closed</span>':'';
+          const fairBadge=p.varT<25?'<span class="tag tag-fair">Fair for all</span>':'';
+          const timeRows=users.map((u,j)=>`<div class="person-row"><div class="p-swatch" style="background:${SWATCHES[j%SWATCHES.length]}"></div><span class="p-name-sm">${esc(u.name)}</span><span class="p-val-sm">${Math.round(p.perT[j])} min</span></div>`).join('');
+          const rStr=p.rating?`<span class="place-stars">${starsStr(p.rating)}</span><span class="place-revs">${p.rating} · ${p.reviews.toLocaleString()} reviews</span>`:'';
+          return`<div class="place-item">
+            <div class="place-n${i<3?' top':''}">${i+1}</div>
+            <div>
+              <div class="place-name-big">${esc(p.name)}</div>
+              <div class="place-tags"><span class="tag tag-${p.type}">${typeLabels[p.type]||p.type}</span>${openTag}${fairBadge}</div>
+              ${rStr?`<div style="margin-bottom:5px">${rStr}</div>`:''}
+              ${p.displayAddr?`<div class="place-addr">${esc(p.displayAddr)}</div>`:''}
+              <div class="place-times">${timeRows}</div>
+              <div class="place-links">
+                <a class="lnk lnk-maps" href="${mapsUrl(p)}" target="_blank" rel="noopener">Maps</a>
+                <a class="lnk" href="${dirUrl(p,origins)}" target="_blank" rel="noopener">Directions</a>
+                <button class="lnk lnk-journey" onclick="toggleJourney('${p.placeId}',${p.lat},${p.lng},this)">TfL Journey</button>
+              </div>
+              <div class="journey-panel" id="jp-${p.placeId}"></div>
+            </div>
+            <div class="metric-col">
+              <div class="metric-big">${Math.round(p.avgT)}</div>
+              <div class="metric-unit">min</div>
+              <div class="metric-sub">max ${Math.round(p.maxT)}m</div>
+              <div class="metric-sub">${p.dist.toFixed(1)} km</div>
+            </div>
           </div>`;
         }).join('');
-        const fairLbl = mpMethod === 'transit' ? 'Estimated transit to midpoint' : 'Distance to midpoint';
-        document.getElementById('fairInfo').innerHTML = `<div class="meta-label">${fairLbl}</div>${fairRows}`;
-
-        // 7. Render place cards
-        document.getElementById('resultsLabel').textContent = `Results — ${places.length} places`;
-        document.getElementById('placeList').innerHTML = places.length
-          ? places.map((p, i) => {
-              const typeLabel = p.type === 'restaurant' ? 'Restaurant' : p.type === 'cafe' ? 'Café' : 'Bar';
-              const openTag   = p.open === true  ? '<span class="tag tag-open">Open now</span>'
-                              : p.open === false ? '<span class="tag tag-closed">Closed</span>' : '';
-              const fairBadge = p.varT < 25 ? '<span class="tag tag-fair">Fair for all</span>' : '';
-              const timeRows  = users.map((u, j) => `
-                <div class="person-row">
-                  <div class="p-swatch" style="background:${SWATCHES[j % SWATCHES.length]}"></div>
-                  <span class="p-name-sm">${esc(u.name)}</span>
-                  <span class="p-val-sm">${Math.round(p.perT[j])} min</span>
-                </div>`).join('');
-              const ratingStr = p.rating ? `<span class="place-stars">${starsStr(p.rating)}</span><span class="place-revs">${p.rating} · ${p.reviews.toLocaleString()} reviews</span>` : '';
-              return `
-                <div class="place-item">
-                  <div class="place-n${i < 3 ? ' top' : ''}">${i + 1}</div>
-                  <div>
-                    <div class="place-name-big">${esc(p.name)}</div>
-                    <div class="place-tags">
-                      <span class="tag tag-${p.type}">${typeLabel}</span>
-                      ${openTag}${fairBadge}
-                    </div>
-                    ${ratingStr ? `<div style="margin-bottom:5px">${ratingStr}</div>` : ''}
-                    ${p.address ? `<div class="place-addr">${esc(p.address)}</div>` : ''}
-                    <div class="place-times">${timeRows}</div>
-                    <div class="place-links">
-                      <a class="lnk lnk-maps" href="${mapsUrl(p)}"    target="_blank" rel="noopener">Maps</a>
-                      <a class="lnk"           href="${reviewsUrl(p)}" target="_blank" rel="noopener">Reviews</a>
-                      <a class="lnk"           href="${dirUrl(p, origins)}" target="_blank" rel="noopener">Directions</a>
-                    </div>
-                  </div>
-                  <div class="metric-col">
-                    <div class="metric-big">${Math.round(p.avgT)}</div>
-                    <div class="metric-unit">min</div>
-                    <div class="metric-sub">max ${Math.round(p.maxT)}m</div>
-                    <div class="metric-sub">${p.dist.toFixed(1)} km</div>
-                  </div>
-                </div>`;
-            }).join('')
-          : '<div class="empty-state">No places found nearby. Try adjusting your locations or place types.</div>';
-
-        document.getElementById('resultsSection').style.display = 'block';
-        document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      } catch (e) {
-        alert('Something went wrong: ' + e.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = 'Find meeting spots';
       }
-    }
 
-    // ── INIT ──────────────────────────────────────────────────
-    renderUsers();
-  </script>
+      document.getElementById('resultsSection').style.display='block';
+      document.getElementById('map').scrollIntoView({behavior:'smooth',block:'start'});
+    } catch(e){
+      alert('Something went wrong: '+e.message);
+    } finally {
+      btn.disabled=false; btn.innerHTML='Find meeting spots';
+    }
+  }
+
+  renderUsers();
+</script>
+
+<script>
+  (function(){
+    const s=document.createElement('script');
+    s.src=`https://maps.googleapis.com/maps/api/js?key=${CONFIG.GOOGLE_API_KEY}&libraries=places&callback=mapsReady`;
+    s.async=true; s.defer=true;
+    document.head.appendChild(s);
+  })();
+</script>
 
 </body>
 </html>
