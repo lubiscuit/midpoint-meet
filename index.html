@@ -21,30 +21,7 @@
     };
   </script>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Midpoint Meet</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-
-  <link rel="apple-touch-icon" href="icon.png"/>
-  <link rel="icon" type="image/png" href="icon.png"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-  <meta name="apple-mobile-web-app-title" content="Midpoint Meet"/>
-  <meta name="theme-color" content="#f8f6f1"/>
-
-  <script>
-    const CONFIG = {
-      GOOGLE_API_KEY: 'YOUR_GOOGLE_API_KEY_HERE',
-      TFL_APP_KEY:    'YOUR_TFL_APP_KEY_HERE',
-    };
-  </script>
-
-  <style>
+ <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg:#f8f6f1; --card:#ffffff; --ink:#18181a; --soft:#6b6b72;
@@ -53,18 +30,18 @@
     }
     html { scroll-behavior: smooth; }
     body { background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; min-height:100vh; }
-
+ 
     .hdr { background:var(--card); border-bottom:var(--rule); padding:1.5rem 1.5rem; display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:100; border-radius:0 0 16px 16px; }
     .hdr-text { flex:1; }
     .hdr h1 { font-family:'Libre Baskerville',serif; font-size:clamp(20px,4vw,26px); font-weight:700; letter-spacing:-.5px; line-height:1; }
     .hdr p { font-size:13px; color:var(--soft); margin-top:4px; font-weight:300; }
     .hdr-icon { width:42px; height:42px; flex-shrink:0; }
-
+ 
     .page { max-width:680px; margin:0 auto; padding:2rem 1.5rem 4rem; display:flex; flex-direction:column; gap:2.5rem; }
-
+ 
     .sec-label { font-size:10px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:var(--soft); margin-bottom:1rem; display:flex; align-items:center; gap:12px; }
     .sec-label::after { content:''; flex:1; height:1px; background:var(--faint); }
-
+ 
     .user-list { display:flex; flex-direction:column; gap:1px; border:var(--rule); background:var(--faint); border-radius:12px; overflow:hidden; }
     .user-item { background:var(--card); display:grid; grid-template-columns:32px 1fr 28px; gap:12px; align-items:center; padding:14px 16px; transition:background .12s; }
     .user-item:hover { background:#fcfbf8; }
@@ -73,24 +50,24 @@
     .u-loc { font-size:12px; color:var(--soft); font-weight:300; margin-top:1px; }
     .rm-btn { width:24px; height:24px; border-radius:50%; border:1px solid var(--faint); background:transparent; cursor:pointer; color:var(--soft); font-size:13px; display:flex; align-items:center; justify-content:center; transition:all .12s; }
     .rm-btn:hover { background:var(--red); color:#fff; border-color:var(--red); }
-
+ 
     .add-form { margin-top:10px; display:grid; grid-template-columns:1fr 1fr auto; gap:8px; align-items:end; }
     .fld { display:flex; flex-direction:column; gap:5px; position:relative; }
     .fld label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--soft); font-weight:500; }
     .fld input { height:38px; border:var(--rule); background:var(--card); padding:0 12px; font-size:13px; font-family:'DM Sans',sans-serif; color:var(--ink); outline:none; transition:border-color .15s; width:100%; border-radius:10px; }
     .fld input:focus { border-color:var(--ink); }
     .fld input::placeholder { color:#c0bdb5; }
-
+ 
     .ac-list { position:absolute; top:100%; left:0; right:0; background:var(--card); border:var(--rule); border-top:none; z-index:300; max-height:200px; overflow-y:auto; box-shadow:0 4px 12px rgba(0,0,0,.08); border-radius:0 0 10px 10px; }
     .ac-item { padding:10px 12px; font-size:13px; cursor:pointer; border-bottom:var(--rule); transition:background .1s; }
     .ac-item:last-child { border-bottom:none; }
     .ac-item:hover { background:#faf8f2; }
     .ac-main { font-weight:500; display:block; }
     .ac-sub { font-size:11px; color:var(--soft); }
-
+ 
     .add-btn { height:38px; background:var(--ink); color:#fff; border:none; padding:0 16px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:opacity .15s; white-space:nowrap; border-radius:10px; }
     .add-btn:hover { opacity:.82; }
-
+ 
     .radio-group { display:flex; flex-direction:column; gap:1px; border:var(--rule); background:var(--faint); border-radius:12px; overflow:hidden; }
     .radio-row { background:var(--card); display:grid; grid-template-columns:1fr auto; align-items:center; padding:14px 16px; cursor:pointer; transition:background .12s; user-select:none; }
     .radio-row:hover { background:#fcfbf8; }
@@ -101,7 +78,7 @@
     .radio-row.on .radio-dot { border-color:var(--ink); }
     .radio-fill { width:8px; height:8px; border-radius:50%; background:var(--ink); opacity:0; transition:opacity .15s; }
     .radio-row.on .radio-fill { opacity:1; }
-
+ 
     .toggle-group { display:flex; flex-direction:column; gap:1px; border:var(--rule); background:var(--faint); border-radius:12px; overflow:hidden; }
     .toggle-row { background:var(--card); display:grid; grid-template-columns:1fr auto; align-items:center; padding:12px 16px; cursor:pointer; transition:background .12s; user-select:none; }
     .toggle-row:hover { background:#fcfbf8; }
@@ -110,7 +87,7 @@
     .toggle-ind.on { background:var(--ink); border-color:var(--ink); }
     .toggle-knob { width:14px; height:14px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
     .toggle-ind.on .toggle-knob { transform:translateX(16px); }
-
+ 
     .filter-row { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--card); border:var(--rule); border-radius:12px; }
     .filter-label { font-size:14px; color:var(--ink); flex:1; }
     .filter-sub { font-size:12px; color:var(--soft); font-weight:300; margin-top:1px; }
@@ -118,29 +95,28 @@
     .star-btn { padding:4px 10px; border:var(--rule); background:var(--bg); font-size:12px; font-weight:500; cursor:pointer; transition:all .12s; color:var(--soft); font-family:'DM Sans',sans-serif; border-radius:20px; }
     .star-btn.on { background:var(--ink); color:#fff; border-color:var(--ink); }
     .star-btn:hover:not(.on) { background:var(--faint); }
-
+ 
     .go-btn { width:100%; height:52px; background:var(--ink); color:#fff; border:none; cursor:pointer; font-family:'Libre Baskerville',serif; font-size:16px; letter-spacing:.5px; display:flex; align-items:center; justify-content:center; gap:10px; transition:opacity .15s; border-radius:14px; }
     .go-btn:hover { opacity:.88; }
     .go-btn:disabled { opacity:.3; cursor:not-allowed; }
     .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; flex-shrink:0; }
     @keyframes spin { to { transform:rotate(360deg); } }
-
+ 
     #map { width:100%; height:280px; border:var(--rule); background:var(--faint); display:none; border-radius:14px; overflow:hidden; }
-
+ 
     .results-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; gap:10px; }
     .results-hdr .sec-label { margin-bottom:0; flex:1; }
     .share-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; background:#25D366; color:#fff; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; border-radius:20px; white-space:nowrap; flex-shrink:0; }
     .share-btn:hover { opacity:.88; }
     .share-btn svg { width:14px; height:14px; flex-shrink:0; }
-
-    .result-meta { border:var(--rule); background:var(--card); padding:16px; margin-bottom:8px; border-radius:12px; }
+ 
     .meta-label { font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--soft); font-weight:500; margin-bottom:10px; }
     .person-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
     .person-row:last-child { margin-bottom:0; }
     .p-swatch { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
     .p-name-sm { font-size:13px; color:var(--soft); font-weight:300; flex:1; }
     .p-val-sm { font-size:13px; color:var(--ink); font-weight:500; }
-
+ 
     .place-list { display:flex; flex-direction:column; gap:8px; }
     .place-item { background:var(--card); padding:18px 16px; display:grid; grid-template-columns:28px 1fr 60px; gap:14px; align-items:start; transition:background .12s; border:var(--rule); border-radius:14px; }
     .place-item:hover { background:#faf8f2; }
@@ -174,7 +150,7 @@
     .lnk-maps:hover { opacity:.82; }
     .lnk-journey { border-color:var(--teal); color:var(--teal); }
     .lnk-journey:hover { background:var(--teal); color:#fff; }
-
+ 
     .journey-panel { display:none; margin-top:10px; border:1px solid #cce8f4; background:#f0f8fc; padding:12px 14px; border-radius:10px; }
     .journey-panel.open { display:block; }
     .journey-ttl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--teal); font-weight:500; margin-bottom:8px; }
@@ -185,14 +161,14 @@
     .j-dot { width:6px; height:6px; border-radius:50%; background:var(--teal); flex-shrink:0; margin-top:4px; }
     .journey-total { font-size:11px; color:var(--teal); font-weight:500; margin-top:5px; }
     .journey-loading { font-size:12px; color:var(--soft); font-style:italic; }
-
+ 
     .metric-col { text-align:right; }
     .metric-big { font-family:'Libre Baskerville',serif; font-size:26px; font-weight:700; color:var(--ink); line-height:1; }
     .metric-unit { font-size:10px; color:var(--soft); letter-spacing:1px; text-transform:uppercase; }
     .metric-sub { font-size:11px; color:var(--soft); margin-top:3px; font-weight:300; }
-
+ 
     .err-msg { border:1px solid #e8c0c0; background:#fdf5f5; padding:10px 14px; font-size:13px; color:var(--red); margin-top:8px; border-radius:10px; }
-
+ 
     /* Current location icon inside input */
     .loc-input-wrap { position:relative; }
     .loc-input-wrap input { padding-right:36px; }
@@ -201,13 +177,13 @@
     .loc-icon-btn svg { width:16px; height:16px; }
     .loc-icon-btn.loading { animation:pulse 1s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-
+ 
     /* Place image */
     .place-img { width:100%; height:160px; object-fit:cover; border-radius:10px; margin-bottom:10px; background:var(--faint); display:block; }
     .place-img-wrap { position:relative; }
     .place-img-placeholder { width:100%; height:100px; background:var(--faint); border-radius:10px; margin-bottom:10px; display:flex; align-items:center; justify-content:center; }
     .place-img-placeholder svg { width:24px; height:24px; opacity:.25; }
-
+ 
     /* Journey panel */
     .journey-panel { display:none; margin-top:8px; background:#f4f9fc; border-radius:8px; overflow:hidden; border:1px solid #cce8f4; }
     .journey-panel.open { display:block; }
@@ -227,10 +203,23 @@
     .journey-connector-line { width:1.5px; height:10px; background:#cce8f4; }
     .journey-total { font-size:11px; color:var(--teal); font-weight:500; margin-top:6px; padding-top:6px; border-top:1px solid #ddeef5; }
     .journey-loading { font-size:12px; color:var(--soft); font-style:italic; padding:8px 12px; }
-
-
+ 
+ 
     .empty-state { padding:2.5rem; text-align:center; color:var(--soft); font-size:14px; font-weight:300; font-style:italic; background:var(--card); border-radius:12px; }
     .no-results { padding:1.5rem; text-align:center; color:var(--soft); font-size:13px; background:var(--card); border:var(--rule); border-radius:12px; }
+ 
+    /* Fairness indicator */
+    .fairness-wrap { margin:6px 0 8px; }
+    .fairness-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--soft); font-weight:500; margin-bottom:4px; display:flex; justify-content:space-between; }
+    .fairness-bar-track { height:4px; background:var(--faint); border-radius:2px; overflow:hidden; }
+    .fairness-bar-fill { height:100%; border-radius:2px; transition:width .4s ease; }
+    .fairness-green { background:#2d6a4f; }
+    .fairness-amber { background:#c17f3c; }
+    .fairness-red   { background:#b84040; }
+    .fairness-text  { font-size:11px; margin-top:3px; font-weight:500; }
+    .fairness-text.green { color:#2d6a4f; }
+    .fairness-text.amber { color:#c17f3c; }
+    .fairness-text.red   { color:#b84040; }
     .cuisine-wrap { overflow:hidden; max-height:0; transition:max-height .4s ease, opacity .3s ease; opacity:0; }
     .cuisine-wrap.visible { max-height:400px; opacity:1; }
     .cuisine-filter { display:flex; flex-wrap:wrap; gap:8px; padding:12px 16px 16px; background:var(--bg); border:var(--rule); border-top:none; border-radius:0 0 12px 12px; }
@@ -238,18 +227,42 @@
     .cuisine-chip { padding:7px 14px; border:var(--rule); background:var(--card); font-size:13px; font-weight:400; cursor:pointer; color:var(--soft); font-family:'DM Sans',sans-serif; border-radius:20px; transition:all .12s; }
     .cuisine-chip.on { background:var(--ink); color:#fff; border-color:var(--ink); }
     .cuisine-chip:hover:not(.on) { background:var(--faint); color:var(--ink); }
-
+ 
     @media (max-width:520px) {
       .add-form { grid-template-columns:1fr; }
       .add-btn { width:100%; }
-      .place-item { grid-template-columns:24px 1fr 48px; gap:10px; }
+      .place-item { grid-template-columns:24px 1fr 44px; gap:8px; padding:14px 12px; }
       .results-hdr { flex-direction:column; align-items:flex-start; }
       .share-btn { width:100%; justify-content:center; }
+      .place-name-big { font-size:14px; }
+      .metric-big { font-size:20px; }
+      .metric-unit { font-size:9px; }
+      .metric-sub { font-size:10px; }
+ 
+      /* Journey panel mobile */
+      .journey-person { padding:6px 10px 10px; }
+      .journey-leg { gap:8px; margin-bottom:8px; }
+      .journey-leg-icon { font-size:14px; }
+      .journey-leg-line { font-size:11px; gap:3px; }
+      .journey-leg-stations { font-size:10px; }
+      .journey-leg-dur { font-size:10px; }
+      .journey-leg-direction { font-size:10px; }
+      .journey-ttl { font-size:9px; padding:6px 10px 4px; }
+      .journey-person-name { font-size:11px; margin-bottom:6px; }
+      .journey-total { font-size:10px; }
+      .journey-connector { margin-left:11px; }
+ 
+      /* Tighter place links on mobile */
+      .place-links { gap:4px; }
+      .lnk { padding:5px 8px; font-size:10px; letter-spacing:0.5px; }
+ 
+      /* Tags smaller on mobile */
+      .tag { font-size:9px; padding:2px 7px; }
     }
   </style>
 </head>
 <body>
-
+ 
 <header class="hdr">
   <div class="hdr-icon">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -266,9 +279,9 @@
     <p>Find the fairest spot for everyone in London</p>
   </div>
 </header>
-
+ 
 <main class="page">
-
+ 
   <section>
     <div class="sec-label">People</div>
     <div class="user-list" id="userList"></div>
@@ -299,7 +312,7 @@
     </div>
     <div id="addErr" class="err-msg" style="display:none"></div>
   </section>
-
+ 
   <section>
     <div class="sec-label">Midpoint method</div>
     <div class="radio-group" id="mpGroup">
@@ -317,7 +330,7 @@
       </div>
     </div>
   </section>
-
+ 
   <section>
     <div class="sec-label">Place types</div>
     <div class="toggle-group">
@@ -355,7 +368,7 @@
       <div class="toggle-row" data-type="tea"         onclick="toggleType(this)"><div class="t-title">Tea shop</div><div class="toggle-ind" id="tog-tea"><div class="toggle-knob"></div></div></div>
     </div>
   </section>
-
+ 
   <section>
     <div class="sec-label">Filters</div>
     <div class="filter-row">
@@ -371,11 +384,11 @@
       </div>
     </div>
   </section>
-
+ 
   <button class="go-btn" id="goBtn" onclick="findPlaces()">Find meeting spots</button>
-
+ 
   <div id="map"></div>
-
+ 
   <section id="resultsSection" style="display:none">
     <div class="results-hdr">
       <div class="sec-label" id="resultsLabel" style="margin-bottom:0;flex:1">Results</div>
@@ -390,9 +403,9 @@
     <div class="result-meta" id="fairInfo"></div>
     <div class="place-list" id="placeList"></div>
   </section>
-
+ 
 </main>
-
+ 
 <script>
   const SWATCHES = ['#c17f3c','#2d6a4f','#534ab7','#b84040','#1a7a9e','#7a3a8a'];
   let users = [
@@ -402,11 +415,11 @@
   let nextId=3, activeTypes=new Set(['restaurant','cafe']), mpMethod='distance', minRating=4, activeCuisines=new Set(), transitOpt='fastest';
   let gMap=null, mapsLoaded=false, acService=null, acTimer=null;
   let lastResults=[], lastGeocoded=[];
-
+ 
   function mapsReady() { mapsLoaded=true; acService=new google.maps.places.AutocompleteService(); }
-
+ 
   function esc(s) { return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
+ 
   // ── AUTOCOMPLETE ──────────────────────────────────────────
   function onLocInput(input) {
     clearTimeout(acTimer);
@@ -430,14 +443,14 @@
       });
     }, 280);
   }
-
+ 
   function pickAC(e, value) {
     e.preventDefault();
     document.getElementById('newLoc').value = value;
     document.getElementById('acList').style.display = 'none';
   }
   function hideAC() { setTimeout(() => { document.getElementById('acList').style.display='none'; }, 150); }
-
+ 
   // ── USERS ─────────────────────────────────────────────────
   function renderUsers() {
     const el = document.getElementById('userList');
@@ -462,7 +475,7 @@
   }
   function removeUser(id) { users=users.filter(u=>u.id!==id); renderUsers(); }
   document.getElementById('newLoc').addEventListener('keydown', e => { if(e.key==='Enter') addUser(); });
-
+ 
   document.getElementById('mpGroup').addEventListener('click', e => {
     const row=e.target.closest('.radio-row'); if(!row) return;
     document.querySelectorAll('.radio-row').forEach(r=>r.classList.remove('on'));
@@ -486,14 +499,14 @@
     document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on'); minRating=parseFloat(btn.dataset.min);
   });
-
+ 
   document.getElementById('cuisineFilter').addEventListener('click', e => {
     const btn=e.target.closest('.cuisine-chip'); if(!btn) return;
     const c=btn.dataset.cuisine;
     if(activeCuisines.has(c)){activeCuisines.delete(c);btn.classList.remove('on');}
     else{activeCuisines.add(c);btn.classList.add('on');}
   });
-
+ 
   // ── CURRENT LOCATION ─────────────────────────────────────────
   function useMyLocation() {
     if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
@@ -525,7 +538,7 @@
       btn.classList.remove('loading');
     });
   }
-
+ 
   // ── GEO HELPERS ───────────────────────────────────────────
   function geocodeAddress(address) {
     return new Promise((resolve, reject) => {
@@ -556,45 +569,67 @@
     if(d<8000)return Math.round(15+d/350);return Math.round(20+d/600);
   }
   async function transitMid(coords) {
-    const geo=geoMid(coords);
-
-    // Pass 1: coarse 3x3 grid using local estimates (instant, no API calls)
-    const coarseOff=[-0.03,0,0.03];
-    let best=null,bestScore=Infinity;
-    for(const dLa of coarseOff)for(const dLo of coarseOff){
-      const c={lat:geo.lat+dLa,lng:geo.lng+dLo};
-      const times=coords.map(x=>estimateTransit(x,c));
-      const avg=times.reduce((a,b)=>a+b,0)/times.length;
-      const variance=times.reduce((s,t)=>s+(t-avg)**2,0)/times.length;
-      const score=variance+avg*.3;
-      if(score<bestScore){bestScore=score;best={...c,times,avg};}
+    // Step 1 — geographic centre as starting anchor (instant)
+    let anchor = geoMid(coords);
+ 
+    if (!CONFIG.TFL_APP_KEY) {
+      // No TfL key — use estimate grid
+      return estimateMid(coords, anchor);
     }
-
-    // Pass 2: fine 3x3 grid around the best candidate, still using estimates
-    const fineOff=[-0.015,0,0.015];
-    for(const dLa of fineOff)for(const dLo of fineOff){
-      const c={lat:best.lat+dLa,lng:best.lng+dLo};
-      const times=coords.map(x=>estimateTransit(x,c));
-      const avg=times.reduce((a,b)=>a+b,0)/times.length;
-      const variance=times.reduce((s,t)=>s+(t-avg)**2,0)/times.length;
-      const score=variance+avg*.3;
-      if(score<bestScore){bestScore=score;best={...c,times,avg};}
-    }
-
-    // Pass 3: single TfL call on the winner to get real times (1 call per person)
-    if(CONFIG.TFL_APP_KEY){
-      try{
-        const realTimes=await Promise.all(
-          coords.map(c=>tflJourney(c,best,transitOpt).then(j=>j?j.duration:estimateTransit(c,best)))
+ 
+    try {
+      // Step 2 — real TfL times from each person to anchor (parallel, N calls)
+      let times = await Promise.all(
+        coords.map(c => tflJourney(c, anchor, transitOpt).then(j => j ? j.duration : estimateTransit(c, anchor)))
+      );
+ 
+      // Step 3 — iterative adjustment: shift midpoint toward whoever takes longest
+      // Repeat up to 2 times to converge on a fairer point
+      for (let iter = 0; iter < 2; iter++) {
+        const avg = times.reduce((a,b) => a+b, 0) / times.length;
+        const maxIdx = times.indexOf(Math.max(...times));
+        const minIdx = times.indexOf(Math.min(...times));
+        const spread = times[maxIdx] - times[minIdx];
+ 
+        // If spread is small enough (under 5 min), we're balanced — stop
+        if (spread <= 5) break;
+ 
+        // Shift anchor 30% toward the person who travels longest
+        const shiftFactor = Math.min(0.3, spread / 100);
+        anchor = {
+          lat: anchor.lat + (coords[maxIdx].lat - anchor.lat) * shiftFactor,
+          lng: anchor.lng + (coords[maxIdx].lng - anchor.lng) * shiftFactor,
+        };
+ 
+        // Re-check times from new anchor (parallel TfL calls)
+        times = await Promise.all(
+          coords.map(c => tflJourney(c, anchor, transitOpt).then(j => j ? j.duration : estimateTransit(c, anchor)))
         );
-        const avg=realTimes.reduce((a,b)=>a+b,0)/realTimes.length;
-        best={...best,times:realTimes,avg};
-      }catch(e){}
+      }
+ 
+      const avg = times.reduce((a,b) => a+b, 0) / times.length;
+      return { ...anchor, times, avg };
+ 
+    } catch(e) {
+      // Fallback to estimate grid if TfL fails
+      return estimateMid(coords, anchor);
     }
-
+  }
+ 
+  function estimateMid(coords, geo) {
+    const offsets = [-0.03, -0.015, 0, 0.015, 0.03];
+    let best = null, bestScore = Infinity;
+    for (const dLa of offsets) for (const dLo of offsets) {
+      const c = { lat: geo.lat+dLa, lng: geo.lng+dLo };
+      const times = coords.map(x => estimateTransit(x, c));
+      const avg = times.reduce((a,b) => a+b, 0) / times.length;
+      const variance = times.reduce((s,t) => s+(t-avg)**2, 0) / times.length;
+      const score = variance + avg * 0.3;
+      if (score < bestScore) { bestScore = score; best = { ...c, times, avg }; }
+    }
     return best;
   }
-
+ 
   // ── TfL JOURNEY ───────────────────────────────────────────
   async function tflJourney(from, to, opt='fastest') {
     try {
@@ -630,7 +665,7 @@
     } catch(e){}
     return null;
   }
-
+ 
   function cleanStation(name) {
     if(!name) return '';
     return name
@@ -643,33 +678,41 @@
       .trim();
   }
   function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'';}
-
+ 
   // ── PLACES SEARCH ─────────────────────────────────────────
-  function searchNearby(lat,lng,type,cuisines) {
-    return new Promise(resolve=>{
-      const svc=new google.maps.places.PlacesService(document.createElement('div'));
-      const typeMap={restaurant:'restaurant',cafe:'cafe',bar:'bar',pub:'bar',tea:'cafe',brunch:'cafe',bakery:'bakery',dessert:'cafe',foodmarket:'food'};
-      const kwMap={pub:'pub',tea:'tea shop',brunch:'brunch',bakery:'bakery',dessert:'dessert',foodmarket:'food market'};
-      const params={location:{lat,lng},radius:2500,type:typeMap[type]||type};
-      const cuisineKw=cuisines&&cuisines.size&&type==='restaurant'?[...cuisines].join(' OR '):'';
-      const kw=[kwMap[type],cuisineKw].filter(Boolean).join(' ');
-      if(kw)params.keyword=kw;
-      svc.nearbySearch(params,(results,status)=>{
-        if(status===google.maps.places.PlacesServiceStatus.OK&&results){
-          resolve(results.map(p=>({
-            id:p.place_id,name:p.name,type,
-            lat:p.geometry.location.lat(),lng:p.geometry.location.lng(),
-            address:p.vicinity||'',rating:p.rating||null,
+  function searchNearby(lat, lng, type, cuisines, radius=800) {
+    return new Promise(resolve => {
+      const svc = new google.maps.places.PlacesService(document.createElement('div'));
+      const typeMap = {restaurant:'restaurant',cafe:'cafe',bar:'bar',pub:'bar',tea:'cafe',brunch:'cafe',bakery:'bakery',dessert:'cafe',foodmarket:'food'};
+      const kwMap = {pub:'pub',tea:'tea shop',brunch:'brunch',bakery:'bakery',dessert:'dessert',foodmarket:'food market'};
+      const params = { location:{lat,lng}, radius, type:typeMap[type]||type };
+      const cuisineKw = cuisines&&cuisines.size&&type==='restaurant'?[...cuisines].join(' OR '):'';
+      const kw = [kwMap[type],cuisineKw].filter(Boolean).join(' ');
+      if (kw) params.keyword = kw;
+      svc.nearbySearch(params, (results, status) => {
+        if (status===google.maps.places.PlacesServiceStatus.OK && results) {
+          resolve(results.map(p => ({
+            id:p.place_id, name:p.name, type,
+            lat:p.geometry.location.lat(), lng:p.geometry.location.lng(),
+            address:p.vicinity||'', rating:p.rating||null,
             reviews:p.user_ratings_total||0,
             open:p.opening_hours?p.opening_hours.open_now:null,
-            placeId:p.place_id,
-            googleTypes:p.types||[],
+            placeId:p.place_id, googleTypes:p.types||[],
           })));
         } else resolve([]);
       });
     });
   }
-
+ 
+  async function searchNearbyAdaptive(lat, lng, type, cuisines) {
+    // Start tight (800m), expand to 1200m, then 1800m if not enough results
+    for (const radius of [800, 1200, 1800]) {
+      const results = await searchNearby(lat, lng, type, cuisines, radius);
+      if (results.length >= 5) return results;
+    }
+    return await searchNearby(lat, lng, type, cuisines, 1800);
+  }
+ 
   function getPlaceDetailsAll(placeId) {
     return new Promise(resolve=>{
       const svc=new google.maps.places.PlacesService(document.createElement('div'));
@@ -681,7 +724,7 @@
       });
     });
   }
-
+ 
   // ── MAP ───────────────────────────────────────────────────
   function drawMap(geocoded,mid,places) {
     const mapEl=document.getElementById('map');
@@ -718,7 +761,7 @@
     places.slice(0,5).forEach(p=>bounds.extend({lat:p.lat,lng:p.lng}));
     gMap.fitBounds(bounds,{top:40,right:40,bottom:40,left:40});
   }
-
+ 
   // ── LINKS ─────────────────────────────────────────────────
   function mapsUrl(p){return`https://www.google.com/maps/place/?q=place_id:${p.placeId}`;}
   function dirUrl(p,origins){return`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(p.lat+','+p.lng)}&waypoints=${origins.map(o=>encodeURIComponent(o.lat+','+o.lng)).join('|')}&travelmode=transit`;}
@@ -738,7 +781,7 @@
     }
     return s;
   }
-
+ 
   // ── SHARE ─────────────────────────────────────────────────
   function shareResults() {
     if(!lastResults.length){alert('Run a search first!');return;}
@@ -756,7 +799,7 @@
     lines.push(`_Found with Midpoint Meet_`);
     window.open(`https://wa.me/?text=${encodeURIComponent(lines.join('\n'))}`, '_blank');
   }
-
+ 
   // ── TfL JOURNEY TOGGLE ────────────────────────────────────
   async function toggleJourney(placeId, placeLat, placeLng, btn) {
     const panel=document.getElementById('jp-'+placeId);
@@ -808,7 +851,7 @@
     }
     panel.innerHTML=html;
   }
-
+ 
   // ── MAIN FIND ─────────────────────────────────────────────
   async function findPlaces() {
     if(!mapsLoaded){
@@ -830,20 +873,20 @@
       btn.innerHTML='<div class="spinner"></div> Locating everyone…';
       const geocoded=await Promise.all(users.map(u=>geocodeAddress(u.location)));
       lastGeocoded=geocoded;
-
+ 
       let mid,tTimes=null;
       if(mpMethod==='fastest'||mpMethod==='fewest'){
         transitOpt=mpMethod;
         btn.innerHTML=`<div class="spinner"></div> Finding fairest midpoint for ${users.length} people…`;
         const td=await transitMid(geocoded); mid=td; tTimes=td.times;
       } else { mid=geoMid(geocoded); }
-
+ 
       btn.innerHTML='<div class="spinner"></div> Searching nearby…';
-      const allRes=await Promise.all([...activeTypes].map(t=>searchNearby(mid.lat,mid.lng,t,activeCuisines)));
+      const allRes=await Promise.all([...activeTypes].map(t=>searchNearbyAdaptive(mid.lat,mid.lng,t,activeCuisines)));
       let places=allRes.flat();
       const seen=new Set();
       places=places.filter(p=>{if(seen.has(p.name))return false;seen.add(p.name);return true;});
-
+ 
       // Exclude places that are primarily non-food venues
       const EXCLUDED_TYPES=new Set([
         'lodging','hotel','motel','hostel',
@@ -857,54 +900,81 @@
         'shopping_mall','department_store','clothing_store','electronics_store',
         'supermarket','convenience_store','hardware_store','furniture_store',
         'movie_theater','casino','bowling_alley','night_club',
+        'amusement_park','stadium','zoo','aquarium','museum','art_gallery',
+        'bowling_alley','arcade','billiard','arcade_game_center',
       ]);
+      // Additional name-based filter for activity/entertainment venues
+      const EXCLUDED_KEYWORDS=['ping pong','table tennis','golf','escape room',
+        'trampoline','climbing','bowling','cinema','karaoke','arcade',
+        'activity','adventure','entertainment','leisure','fitness','crossfit'];
       places=places.filter(p=>{
         if(!p.googleTypes||!p.googleTypes.length)return true;
-        // If the PRIMARY type (first in array) is an excluded category, filter out
         const primaryType=p.googleTypes[0];
         if(EXCLUDED_TYPES.has(primaryType))return false;
-        // Also filter if lodging appears anywhere in types (catches hotel cafes)
         if(p.googleTypes.includes('lodging'))return false;
+        // Filter by name keywords for activity venues that sneak through
+        const nameLower=p.name.toLowerCase();
+        if(EXCLUDED_KEYWORDS.some(kw=>nameLower.includes(kw)))return false;
         return true;
       });
       places=places.map(p=>{
         const perT=geocoded.map(g=>estimateTransit(g,{lat:p.lat,lng:p.lng}));
         const avgT=perT.reduce((a,b)=>a+b,0)/perT.length;
         const maxT=Math.max(...perT);
+        const minT=Math.min(...perT);
+        const spread=maxT-minT; // key fairness metric: difference between best and worst journey
         const varT=perT.reduce((s,t)=>s+(t-avgT)**2,0)/perT.length;
-        return{...p,perT,avgT,maxT,varT,dist:haversine(mid,{lat:p.lat,lng:p.lng})};
+        const dist=haversine(mid,{lat:p.lat,lng:p.lng});
+        // Composite fairness score: weighted blend of spread + distance
+        // Lower = fairer and closer
+        const fairScore=spread*0.6 + dist*8;
+        return{...p,perT,avgT,maxT,minT,spread,varT,dist,fairScore};
       });
-
-      // Rating filter
-      places=places.filter(p=>minRating===0||!p.rating||p.rating>=minRating);
-      places.sort((a,b)=>(mpMethod==='fastest'||mpMethod==='fewest')?a.varT-b.varT||a.avgT-b.avgT:a.dist-b.dist);
-      places=places.slice(0,10);
-
+ 
+      // Rating filter handled in sort block above
+      // Apply rating filter with fallback
+      let filtered=places.filter(p=>minRating===0||!p.rating||p.rating>=minRating);
+      if(filtered.length<3) filtered=places;
+      places=filtered;
+ 
+      // Sort by composite fairScore (spread + distance blend)
+      // This surfaces places that are both close AND fair for everyone
+      places.sort((a,b)=>a.fairScore-b.fairScore);
+ 
+      places=places.slice(0,8);
+ 
       // Full addresses with postcodes — top 5 only, 3s timeout fallback per place
       btn.innerHTML='<div class="spinner"></div> Fetching addresses…';
       // Show results immediately with basic data, load photos in background
       places.forEach(p=>{ p.displayAddr=p.address; p.photo=null; });
-
+ 
       lastResults=places;
       drawMap(geocoded,mid,places);
-
+ 
       // Fairness summary
       const origins=geocoded.map(g=>({lat:g.lat,lng:g.lng}));
-      const fairRows=users.map((u,i)=>{
-        const sw=SWATCHES[i%SWATCHES.length];
-        const val=(mpMethod==='fastest'||mpMethod==='fewest')&&tTimes?`${Math.round(tTimes[i])} min transit`:`${haversine(geocoded[i],mid).toFixed(1)} km`;
-        return`<div class="person-row"><div class="p-swatch" style="background:${sw}"></div><span class="p-name-sm">${esc(u.name)}</span><span class="p-val-sm">${val}</span></div>`;
-      }).join('');
-      document.getElementById('fairInfo').innerHTML=`<div class="meta-label">${(mpMethod==='fastest'||mpMethod==='fewest')?'Estimated transit to midpoint':'Distance to midpoint'}</div>${fairRows}`;
+ 
       document.getElementById('resultsLabel').textContent=`Results — ${places.length} place${places.length!==1?'s':''}`;
-
+ 
       if(!places.length){
         document.getElementById('placeList').innerHTML=`<div class="no-results">No places found matching your filters. Try lowering the minimum rating or enabling more place types.</div>`;
       } else {
         const typeLabels={restaurant:'Restaurant',cafe:'Café',bar:'Bar',pub:'Pub',tea:'Tea shop',brunch:'Brunch',bakery:'Bakery',dessert:'Dessert café',foodmarket:'Food market'};
         document.getElementById('placeList').innerHTML=places.map((p,i)=>{
           const openTag=p.open===true?'<span class="tag tag-open">Open now</span>':p.open===false?'<span class="tag tag-closed">Closed</span>':'';
-          const fairBadge=p.varT<25?'<span class="tag tag-fair">Fair for all</span>':'';
+          // Fairness indicator — based on spread (max - min travel time)
+          const spread=p.spread||0;
+          let fairClass,fairLabel,fairWidth;
+          if(spread<=5){fairClass='green';fairLabel='Very fair for all';fairWidth=100;}
+          else if(spread<=12){fairClass='green';fairLabel='Fair for all';fairWidth=75;}
+          else if(spread<=20){fairClass='amber';fairLabel=`${Math.round(spread)} min difference`;fairWidth=50;}
+          else{fairClass='red';fairLabel=`${Math.round(spread)} min difference`;fairWidth=25;}
+          const fairBadge=spread<=12?'<span class="tag tag-fair">Fair for all</span>':'';
+          const fairnessBar=`<div class="fairness-wrap">
+            <div class="fairness-label"><span>Journey fairness</span></div>
+            <div class="fairness-bar-track"><div class="fairness-bar-fill fairness-${fairClass}" style="width:${fairWidth}%"></div></div>
+            <div class="fairness-text ${fairClass}">${fairLabel}</div>
+          </div>`;
           const timeRows=users.map((u,j)=>`<div class="person-row"><div class="p-swatch" style="background:${SWATCHES[j%SWATCHES.length]}"></div><span class="p-name-sm">${esc(u.name)}</span><span class="p-val-sm">${Math.round(p.perT[j])} min</span></div>`).join('');
           const rStr=p.rating?`<span class="place-stars">${starsStr(p.rating)}</span><span class="place-revs">${p.rating} · ${p.reviews.toLocaleString()} reviews</span>`:'';
           return`<div class="place-item">
@@ -917,6 +987,7 @@
               ${rStr?`<div style="margin-bottom:5px">${rStr}</div>`:''}
               ${p.displayAddr?`<div class="place-addr" id="place-addr-${p.placeId}">${esc(p.displayAddr)}</div>`:''}
               <div class="place-times">${timeRows}</div>
+              ${fairnessBar}
               <div class="place-links">
                 <a class="lnk lnk-maps" href="${mapsUrl(p)}" target="_blank" rel="noopener">Maps</a>
                 <a class="lnk" href="${dirUrl(p,origins)}" target="_blank" rel="noopener">Directions</a>
@@ -933,24 +1004,28 @@
           </div>`;
         }).join('');
       }
-
+ 
       document.getElementById('resultsSection').style.display='block';
       document.getElementById('map').scrollIntoView({behavior:'smooth',block:'start'});
-
-      // Load full addresses and photos in background after results are visible
-      places.slice(0,3).forEach(async (p,i)=>{
-        const timeout=new Promise(r=>setTimeout(()=>r(null),4000));
+ 
+      // Load photos and full addresses for all places in background
+      // Stagger requests slightly to avoid hammering the API
+      places.forEach(async (p,i)=>{
+        await new Promise(r=>setTimeout(r, i*200)); // 200ms stagger between each
+        const timeout=new Promise(r=>setTimeout(()=>r(null),5000));
         const details=await Promise.race([getPlaceDetailsAll(p.placeId),timeout]);
         if(details){
-          if(details.address) p.displayAddr=details.address;
+          if(details.address){
+            p.displayAddr=details.address;
+            const addr=document.querySelector(`#place-addr-${p.placeId}`);
+            if(addr)addr.textContent=details.address;
+          }
           if(details.photo){
             const img=document.querySelector(`#place-img-${p.placeId}`);
             if(img){img.src=details.photo;img.style.display='block';}
             const ph=document.querySelector(`#place-ph-${p.placeId}`);
             if(ph)ph.style.display='none';
           }
-          const addr=document.querySelector(`#place-addr-${p.placeId}`);
-          if(addr&&details.address)addr.textContent=details.address;
         }
       });
     } catch(e){
@@ -959,10 +1034,10 @@
       btn.disabled=false; btn.innerHTML='Find meeting spots';
     }
   }
-
+ 
   renderUsers();
 </script>
-
+ 
 <script>
   (function(){
     const s=document.createElement('script');
@@ -971,6 +1046,7 @@
     document.head.appendChild(s);
   })();
 </script>
-
+ 
 </body>
 </html>
+ 
