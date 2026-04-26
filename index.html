@@ -21,6 +21,29 @@
     };
   </script>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Midpoint Meet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <link rel="apple-touch-icon" href="icon.png"/>
+  <link rel="icon" type="image/png" href="icon.png"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Midpoint Meet"/>
+  <meta name="theme-color" content="#f8f6f1"/>
+
+  <script>
+    const CONFIG = {
+      GOOGLE_API_KEY: 'YOUR_GOOGLE_API_KEY_HERE',
+      TFL_APP_KEY:    'YOUR_TFL_APP_KEY_HERE',
+    };
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -169,6 +192,43 @@
     .metric-sub { font-size:11px; color:var(--soft); margin-top:3px; font-weight:300; }
 
     .err-msg { border:1px solid #e8c0c0; background:#fdf5f5; padding:10px 14px; font-size:13px; color:var(--red); margin-top:8px; border-radius:10px; }
+
+    /* Current location icon inside input */
+    .loc-input-wrap { position:relative; }
+    .loc-input-wrap input { padding-right:36px; }
+    .loc-icon-btn { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:24px; height:24px; background:transparent; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--soft); padding:0; border-radius:50%; transition:all .12s; }
+    .loc-icon-btn:hover { color:var(--ink); background:var(--faint); }
+    .loc-icon-btn svg { width:16px; height:16px; }
+    .loc-icon-btn.loading { animation:pulse 1s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* Place image */
+    .place-img { width:100%; height:160px; object-fit:cover; border-radius:10px; margin-bottom:10px; background:var(--faint); display:block; }
+    .place-img-wrap { position:relative; }
+    .place-img-placeholder { width:100%; height:100px; background:var(--faint); border-radius:10px; margin-bottom:10px; display:flex; align-items:center; justify-content:center; }
+    .place-img-placeholder svg { width:24px; height:24px; opacity:.25; }
+
+    /* Journey panel */
+    .journey-panel { display:none; margin-top:8px; background:#f4f9fc; border-radius:8px; overflow:hidden; border:1px solid #cce8f4; }
+    .journey-panel.open { display:block; }
+    .journey-ttl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--teal); font-weight:500; padding:8px 12px 6px; }
+    .journey-person { padding:6px 12px 10px; border-top:1px solid #ddeef5; }
+    .journey-person:first-of-type { border-top:none; }
+    .journey-person-name { font-size:12px; font-weight:500; color:var(--ink); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+    .journey-leg { display:flex; gap:10px; margin-bottom:6px; align-items:flex-start; }
+    .journey-leg:last-child { margin-bottom:0; }
+    .journey-leg-icon { font-size:16px; line-height:1; flex-shrink:0; margin-top:1px; }
+    .journey-leg-body { flex:1; min-width:0; }
+    .journey-leg-line { font-size:12px; font-weight:500; color:var(--ink); display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
+    .journey-leg-direction { font-size:11px; color:var(--soft); font-weight:300; }
+    .journey-leg-stations { font-size:11px; color:var(--soft); margin-top:2px; line-height:1.4; }
+    .journey-leg-dur { font-size:11px; color:var(--teal); font-weight:500; margin-left:auto; flex-shrink:0; }
+    .journey-connector { width:16px; margin-left:13px; margin-bottom:2px; display:flex; flex-direction:column; align-items:center; }
+    .journey-connector-line { width:1.5px; height:10px; background:#cce8f4; }
+    .journey-total { font-size:11px; color:var(--teal); font-weight:500; margin-top:6px; padding-top:6px; border-top:1px solid #ddeef5; }
+    .journey-loading { font-size:12px; color:var(--soft); font-style:italic; padding:8px 12px; }
+
+
     .empty-state { padding:2.5rem; text-align:center; color:var(--soft); font-size:14px; font-weight:300; font-style:italic; background:var(--card); border-radius:12px; }
     .no-results { padding:1.5rem; text-align:center; color:var(--soft); font-size:13px; background:var(--card); border:var(--rule); border-radius:12px; }
     .cuisine-wrap { overflow:hidden; max-height:0; transition:max-height .4s ease, opacity .3s ease; opacity:0; }
@@ -219,9 +279,21 @@
       </div>
       <div class="fld">
         <label>Location</label>
-        <input id="newLoc" placeholder="SE13 or Brixton" maxlength="100" autocomplete="off"
-               oninput="onLocInput(this)" onblur="hideAC()"/>
-        <div class="ac-list" id="acList" style="display:none"></div>
+        <div class="loc-input-wrap">
+          <input id="newLoc" placeholder="SE13 or Brixton" maxlength="100" autocomplete="off"
+                 oninput="onLocInput(this)" onblur="hideAC()"/>
+          <button class="loc-icon-btn" id="locBtn" onclick="useMyLocation()" title="Use my current location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
+              <line x1="12" y1="2" x2="12" y2="6"/>
+              <line x1="12" y1="18" x2="12" y2="22"/>
+              <line x1="2" y1="12" x2="6" y2="12"/>
+              <line x1="18" y1="12" x2="22" y2="12"/>
+            </svg>
+          </button>
+          <div class="ac-list" id="acList" style="display:none"></div>
+        </div>
       </div>
       <button class="add-btn" onclick="addUser()">Add</button>
     </div>
@@ -235,8 +307,12 @@
         <div><div class="r-title">Equal distance</div><div class="r-sub">Geographic centre of all locations</div></div>
         <div class="radio-dot"><div class="radio-fill"></div></div>
       </div>
-      <div class="radio-row" data-mp="transit">
-        <div><div class="r-title">Equal travel time</div><div class="r-sub">TfL public transport estimate</div></div>
+      <div class="radio-row" data-mp="fastest">
+        <div><div class="r-title">Fastest journey</div><div class="r-sub">Minimise total travel time · TfL</div></div>
+        <div class="radio-dot"><div class="radio-fill"></div></div>
+      </div>
+      <div class="radio-row" data-mp="fewest">
+        <div><div class="r-title">Fewest changes</div><div class="r-sub">Minimise number of interchanges · TfL</div></div>
         <div class="radio-dot"><div class="radio-fill"></div></div>
       </div>
     </div>
@@ -323,7 +399,7 @@
     { id:1, name:'Alice', location:'Shoreditch, London' },
     { id:2, name:'Bob',   location:'Brixton, London'    },
   ];
-  let nextId=3, activeTypes=new Set(['restaurant','cafe']), mpMethod='distance', minRating=4, activeCuisines=new Set();
+  let nextId=3, activeTypes=new Set(['restaurant','cafe']), mpMethod='distance', minRating=4, activeCuisines=new Set(), transitOpt='fastest';
   let gMap=null, mapsLoaded=false, acService=null, acTimer=null;
   let lastResults=[], lastGeocoded=[];
 
@@ -418,6 +494,38 @@
     else{activeCuisines.add(c);btn.classList.add('on');}
   });
 
+  // ── CURRENT LOCATION ─────────────────────────────────────────
+  function useMyLocation() {
+    if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
+    const btn = document.getElementById('locBtn');
+    btn.classList.add('loading');
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      try {
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+          let label = 'My location';
+          if (status === 'OK' && results.length) {
+            const r = results[0];
+            const parts = r.address_components;
+            const area = parts.find(p => p.types.includes('neighborhood') || p.types.includes('sublocality'))?.long_name;
+            const postcode = parts.find(p => p.types.includes('postal_code'))?.long_name;
+            label = [area, postcode].filter(Boolean).join(', ') || r.formatted_address.split(',')[0];
+          }
+          const nameVal = document.getElementById('newName').value.trim();
+          document.getElementById('newLoc').value = label;
+          if (!nameVal) document.getElementById('newName').value = 'Me';
+        });
+      } catch(e) {
+        document.getElementById('newLoc').value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      }
+      btn.classList.remove('loading');
+    }, () => {
+      alert('Could not get your location. Please check your browser location permissions.');
+      btn.classList.remove('loading');
+    });
+  }
+
   // ── GEO HELPERS ───────────────────────────────────────────
   function geocodeAddress(address) {
     return new Promise((resolve, reject) => {
@@ -477,7 +585,7 @@
     if(CONFIG.TFL_APP_KEY){
       try{
         const realTimes=await Promise.all(
-          coords.map(c=>tflJourney(c,best).then(j=>j?j.duration:estimateTransit(c,best)))
+          coords.map(c=>tflJourney(c,best,transitOpt).then(j=>j?j.duration:estimateTransit(c,best)))
         );
         const avg=realTimes.reduce((a,b)=>a+b,0)/realTimes.length;
         best={...best,times:realTimes,avg};
@@ -488,26 +596,51 @@
   }
 
   // ── TfL JOURNEY ───────────────────────────────────────────
-  async function tflJourney(from, to) {
+  async function tflJourney(from, to, opt='fastest') {
     try {
       const key = CONFIG.TFL_APP_KEY ? `&app_key=${CONFIG.TFL_APP_KEY}` : '';
-      const url = `https://api.tfl.gov.uk/Journey/JourneyResults/${from.lat},${from.lng}/to/${to.lat},${to.lng}?mode=tube,bus,overground,elizabeth-line,walking${key}`;
+      const journeyPref = opt==='fewest' ? '&journeyPreference=LeastInterchange' : '&journeyPreference=LeastTime';
+      const url = `https://api.tfl.gov.uk/Journey/JourneyResults/${from.lat},${from.lng}/to/${to.lat},${to.lng}?mode=tube,bus,overground,elizabeth-line,walking${journeyPref}${key}`;
       const r = await fetch(url);
       const d = await r.json();
       if (d.journeys&&d.journeys.length) {
         const j=d.journeys[0];
-        const steps=j.legs.map(leg=>{
-          const mode=leg.mode?leg.mode.name:'walk';
-          const from=leg.departurePoint?leg.departurePoint.commonName:'';
-          const to=leg.arrivalPoint?leg.arrivalPoint.commonName:'';
-          const line=leg.routeOptions&&leg.routeOptions.length?leg.routeOptions[0].name:'';
-          if(mode==='walking')return`Walk ${leg.duration} min`;
-          return`${cap(mode)}${line?' '+line:''}: ${from} → ${to} (${leg.duration} min)`;
+        const modeIcons={tube:'🚇',bus:'🚌',walking:'🚶',overground:'🚊',elizabeth_line:'🟣',dlr:'🚈',tram:'🚋',national_rail:'🚆',ferry:'⛴️',coach:'🚌'};
+        const modeNames={tube:'Tube',bus:'Bus',walking:'Walk',overground:'Overground',elizabeth_line:'Elizabeth line',dlr:'DLR',tram:'Tram',national_rail:'National Rail'};
+        const legs=j.legs.map(leg=>{
+          const rawMode=(leg.mode?leg.mode.name:'walking').replace('-','_');
+          const icon=modeIcons[rawMode]||'🚌';
+          const modeName=modeNames[rawMode]||cap(rawMode);
+          const depStation=leg.departurePoint?cleanStation(leg.departurePoint.commonName):'';
+          const arrStation=leg.arrivalPoint?cleanStation(leg.arrivalPoint.commonName):'';
+          const dur=leg.duration||0;
+          // Get line name and direction/bound
+          const route=leg.routeOptions&&leg.routeOptions.length?leg.routeOptions[0]:null;
+          const lineName=route?route.name:'';
+          // TfL returns direction as routeOptions[0].directions or leg.instruction
+          const direction=route&&route.directions&&route.directions.length?route.directions[0]:'';
+          const instruction=leg.instruction&&leg.instruction.summary?leg.instruction.summary:'';
+          if(rawMode==='walking'){
+            return{type:'walk',icon:'🚶',dur,depStation,arrStation};
+          }
+          return{type:'transit',icon,modeName,lineName,direction,instruction,depStation,arrStation,dur};
         });
-        return{duration:j.duration,steps};
+        return{duration:j.duration,legs};
       }
     } catch(e){}
     return null;
+  }
+
+  function cleanStation(name) {
+    if(!name) return '';
+    return name
+      .replace(' Underground Station','')
+      .replace(' Rail Station','')
+      .replace(' DLR Station','')
+      .replace(' Tram Stop','')
+      .replace(' Bus Stop','')
+      .replace(' Station','')
+      .trim();
   }
   function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'';}
 
@@ -530,17 +663,21 @@
             reviews:p.user_ratings_total||0,
             open:p.opening_hours?p.opening_hours.open_now:null,
             placeId:p.place_id,
+            googleTypes:p.types||[],
           })));
         } else resolve([]);
       });
     });
   }
 
-  function getFullAddress(placeId) {
+  function getPlaceDetailsAll(placeId) {
     return new Promise(resolve=>{
       const svc=new google.maps.places.PlacesService(document.createElement('div'));
-      svc.getDetails({placeId,fields:['formatted_address']},(result,status)=>{
-        resolve(status===google.maps.places.PlacesServiceStatus.OK&&result?result.formatted_address:'');
+      svc.getDetails({placeId,fields:['formatted_address','photos']},(result,status)=>{
+        if(status===google.maps.places.PlacesServiceStatus.OK&&result){
+          const photo=result.photos&&result.photos.length?result.photos[0].getUrl({maxWidth:600,maxHeight:300}):null;
+          resolve({address:result.formatted_address||'',photo});
+        } else resolve({address:'',photo:null});
       });
     });
   }
@@ -585,14 +722,30 @@
   // ── LINKS ─────────────────────────────────────────────────
   function mapsUrl(p){return`https://www.google.com/maps/place/?q=place_id:${p.placeId}`;}
   function dirUrl(p,origins){return`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(p.lat+','+p.lng)}&waypoints=${origins.map(o=>encodeURIComponent(o.lat+','+o.lng)).join('|')}&travelmode=transit`;}
-  function starsStr(r){const f=Math.floor(r);let s='';for(let i=0;i<5;i++)s+=i<f?'●':'○';return s;}
+  function starsStr(r) {
+    if(!r) return '';
+    const full=Math.floor(r);
+    const half=r-full>=0.5;
+    let s='';
+    for(let i=0;i<5;i++){
+      if(i<full){
+        s+=`<svg width="12" height="12" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin:-1px 1px 0 0" fill="#c17f3c"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>`;
+      } else if(i===full&&half){
+        s+=`<svg width="12" height="12" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin:-1px 1px 0 0"><defs><linearGradient id="hg${i}"><stop offset="50%" stop-color="#c17f3c"/><stop offset="50%" stop-color="none"/></linearGradient></defs><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="url(#hg${i})" stroke="#c17f3c" stroke-width="1.5"/></svg>`;
+      } else {
+        s+=`<svg width="12" height="12" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin:-1px 1px 0 0" fill="none" stroke="#c17f3c" stroke-width="1.5"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>`;
+      }
+    }
+    return s;
+  }
 
   // ── SHARE ─────────────────────────────────────────────────
   function shareResults() {
     if(!lastResults.length){alert('Run a search first!');return;}
     const lines=['📍 *Midpoint Meet Results*\n'];
     lines.push(`👥 ${users.map(u=>u.name).join(' + ')}`);
-    lines.push(`📐 ${mpMethod==='transit'?'Equal travel time':'Equal distance'}\n`);
+    const mpLabel={'distance':'Equal distance','fastest':'Fastest journey (TfL)','fewest':'Fewest changes (TfL)'}[mpMethod]||mpMethod;
+    lines.push(`📐 ${mpLabel}\n`);
     lastResults.slice(0,5).forEach((p,i)=>{
       lines.push(`*${i+1}. ${p.name}*`);
       if(p.rating)lines.push(`⭐ ${p.rating} (${p.reviews.toLocaleString()} reviews)`);
@@ -615,16 +768,41 @@
     panel.dataset.loaded='1';
     panel.innerHTML=`<div class="journey-ttl">TfL suggested routes</div><div class="journey-loading">Loading…</div>`;
     const dest={lat:placeLat,lng:placeLng};
-    const results=await Promise.all(users.map((u,i)=>tflJourney(lastGeocoded[i],dest).then(j=>({u,j,i}))));
-    let html=`<div class="journey-ttl">TfL suggested routes</div>`;
+    const results=await Promise.all(users.map((u,i)=>tflJourney(lastGeocoded[i],dest,transitOpt).then(j=>({u,j,i}))));
+    let html=`<div class="journey-ttl">TfL routes${transitOpt==='fewest'?' · fewest changes':' · fastest'}</div>`;
     for(const{u,j,i}of results){
       const sw=SWATCHES[i%SWATCHES.length];
       html+=`<div class="journey-person"><div class="journey-person-name"><div class="p-swatch" style="background:${sw};width:8px;height:8px;border-radius:50%;flex-shrink:0"></div>${esc(u.name)}</div>`;
-      if(j){
-        j.steps.forEach(s=>{html+=`<div class="journey-step"><div class="j-dot"></div><span>${esc(s)}</span></div>`;});
-        html+=`<div class="journey-total">Total: ${j.duration} min</div>`;
+      if(j&&j.legs){
+        j.legs.forEach((leg,li)=>{
+          if(leg.type==='walk'){
+            html+=`<div class="journey-leg">
+              <div class="journey-leg-icon">🚶</div>
+              <div class="journey-leg-body">
+                <div class="journey-leg-line">Walk <span class="journey-leg-dur">${leg.dur} min</span></div>
+                ${leg.depStation&&leg.arrStation?`<div class="journey-leg-stations">${esc(leg.depStation)} → ${esc(leg.arrStation)}</div>`:''}
+              </div>
+            </div>`;
+          } else {
+            const lineLabel=leg.lineName?`${leg.modeName} — ${leg.lineName}`:leg.modeName;
+            // Extract bound from direction or instruction
+            const bound=leg.direction||'';
+            const boundLabel=bound?` <span class="journey-leg-direction">(${esc(bound)})</span>`:'';
+            html+=`<div class="journey-leg">
+              <div class="journey-leg-icon">${leg.icon}</div>
+              <div class="journey-leg-body">
+                <div class="journey-leg-line">${esc(lineLabel)}${boundLabel} <span class="journey-leg-dur">${leg.dur} min</span></div>
+                <div class="journey-leg-stations">Board at <strong>${esc(leg.depStation)}</strong> · Alight at <strong>${esc(leg.arrStation)}</strong></div>
+              </div>
+            </div>`;
+          }
+          if(li<j.legs.length-1){
+            html+=`<div class="journey-connector"><div class="journey-connector-line"></div></div>`;
+          }
+        });
+        html+=`<div class="journey-total">🕐 Total journey: ${j.duration} min</div>`;
       } else {
-        html+=`<div class="journey-step"><div class="j-dot"></div><span>~${estimateTransit(lastGeocoded[i],dest)} min estimated</span></div>`;
+        html+=`<div class="journey-leg"><div class="journey-leg-icon">🚌</div><div class="journey-leg-body"><div class="journey-leg-line">Estimated <span class="journey-leg-dur">~${estimateTransit(lastGeocoded[i],dest)} min</span></div><div class="journey-leg-stations">Live TfL data unavailable</div></div></div>`;
       }
       html+=`</div>`;
     }
@@ -633,7 +811,16 @@
 
   // ── MAIN FIND ─────────────────────────────────────────────
   async function findPlaces() {
-    if(!mapsLoaded){alert('Maps still loading, please wait.');return;}
+    if(!mapsLoaded){
+      const btn=document.getElementById('goBtn');
+      btn.innerHTML='<div class="spinner"></div> Loading maps…';
+      btn.disabled=true;
+      await new Promise(resolve=>{
+        const check=setInterval(()=>{if(mapsLoaded){clearInterval(check);resolve();}},200);
+        setTimeout(()=>{clearInterval(check);resolve();},8000);
+      });
+      if(!mapsLoaded){alert('Google Maps failed to load. Please check your internet connection and refresh.');return;}
+    }
     if(users.length<2){alert('Add at least 2 people.');return;}
     if(!activeTypes.size){alert('Select at least one place type.');return;}
     const btn=document.getElementById('goBtn');
@@ -645,7 +832,8 @@
       lastGeocoded=geocoded;
 
       let mid,tTimes=null;
-      if(mpMethod==='transit'){
+      if(mpMethod==='fastest'||mpMethod==='fewest'){
+        transitOpt=mpMethod;
         btn.innerHTML=`<div class="spinner"></div> Finding fairest midpoint for ${users.length} people…`;
         const td=await transitMid(geocoded); mid=td; tTimes=td.times;
       } else { mid=geoMid(geocoded); }
@@ -655,6 +843,30 @@
       let places=allRes.flat();
       const seen=new Set();
       places=places.filter(p=>{if(seen.has(p.name))return false;seen.add(p.name);return true;});
+
+      // Exclude places that are primarily non-food venues
+      const EXCLUDED_TYPES=new Set([
+        'lodging','hotel','motel','hostel',
+        'real_estate_agency','insurance_agency','bank','atm',
+        'gas_station','car_dealer','car_repair','car_wash',
+        'parking','storage','moving_company',
+        'hospital','doctor','dentist','pharmacy','physiotherapist',
+        'gym','spa','beauty_salon','hair_care','laundry',
+        'accounting','lawyer','travel_agency','embassy',
+        'school','university','library','church','mosque','synagogue',
+        'shopping_mall','department_store','clothing_store','electronics_store',
+        'supermarket','convenience_store','hardware_store','furniture_store',
+        'movie_theater','casino','bowling_alley','night_club',
+      ]);
+      places=places.filter(p=>{
+        if(!p.googleTypes||!p.googleTypes.length)return true;
+        // If the PRIMARY type (first in array) is an excluded category, filter out
+        const primaryType=p.googleTypes[0];
+        if(EXCLUDED_TYPES.has(primaryType))return false;
+        // Also filter if lodging appears anywhere in types (catches hotel cafes)
+        if(p.googleTypes.includes('lodging'))return false;
+        return true;
+      });
       places=places.map(p=>{
         const perT=geocoded.map(g=>estimateTransit(g,{lat:p.lat,lng:p.lng}));
         const avgT=perT.reduce((a,b)=>a+b,0)/perT.length;
@@ -665,17 +877,13 @@
 
       // Rating filter
       places=places.filter(p=>minRating===0||!p.rating||p.rating>=minRating);
-      places.sort((a,b)=>mpMethod==='transit'?a.varT-b.varT||a.avgT-b.avgT:a.dist-b.dist);
+      places.sort((a,b)=>(mpMethod==='fastest'||mpMethod==='fewest')?a.varT-b.varT||a.avgT-b.avgT:a.dist-b.dist);
       places=places.slice(0,10);
 
       // Full addresses with postcodes — top 5 only, 3s timeout fallback per place
       btn.innerHTML='<div class="spinner"></div> Fetching addresses…';
-      await Promise.all(places.slice(0,5).map(async p=>{
-        const timeout=new Promise(r=>setTimeout(()=>r(''),3000));
-        const full=await Promise.race([getFullAddress(p.placeId),timeout]);
-        p.displayAddr=full||p.address;
-      }));
-      places.slice(5).forEach(p=>{ p.displayAddr=p.address; });
+      // Show results immediately with basic data, load photos in background
+      places.forEach(p=>{ p.displayAddr=p.address; p.photo=null; });
 
       lastResults=places;
       drawMap(geocoded,mid,places);
@@ -684,10 +892,10 @@
       const origins=geocoded.map(g=>({lat:g.lat,lng:g.lng}));
       const fairRows=users.map((u,i)=>{
         const sw=SWATCHES[i%SWATCHES.length];
-        const val=mpMethod==='transit'&&tTimes?`${Math.round(tTimes[i])} min transit`:`${haversine(geocoded[i],mid).toFixed(1)} km`;
+        const val=(mpMethod==='fastest'||mpMethod==='fewest')&&tTimes?`${Math.round(tTimes[i])} min transit`:`${haversine(geocoded[i],mid).toFixed(1)} km`;
         return`<div class="person-row"><div class="p-swatch" style="background:${sw}"></div><span class="p-name-sm">${esc(u.name)}</span><span class="p-val-sm">${val}</span></div>`;
       }).join('');
-      document.getElementById('fairInfo').innerHTML=`<div class="meta-label">${mpMethod==='transit'?'Estimated transit to midpoint':'Distance to midpoint'}</div>${fairRows}`;
+      document.getElementById('fairInfo').innerHTML=`<div class="meta-label">${(mpMethod==='fastest'||mpMethod==='fewest')?'Estimated transit to midpoint':'Distance to midpoint'}</div>${fairRows}`;
       document.getElementById('resultsLabel').textContent=`Results — ${places.length} place${places.length!==1?'s':''}`;
 
       if(!places.length){
@@ -702,10 +910,12 @@
           return`<div class="place-item">
             <div class="place-n${i<3?' top':''}">${i+1}</div>
             <div>
+              <img id="place-img-${p.placeId}" class="place-img" src="" alt="${esc(p.name)}" style="display:none" loading="lazy" onerror="this.style.display='none'"/>
+              <div id="place-ph-${p.placeId}" class="place-img-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>
               <div class="place-name-big">${esc(p.name)}</div>
               <div class="place-tags"><span class="tag tag-${p.type}">${typeLabels[p.type]||p.type}</span>${openTag}${fairBadge}</div>
               ${rStr?`<div style="margin-bottom:5px">${rStr}</div>`:''}
-              ${p.displayAddr?`<div class="place-addr">${esc(p.displayAddr)}</div>`:''}
+              ${p.displayAddr?`<div class="place-addr" id="place-addr-${p.placeId}">${esc(p.displayAddr)}</div>`:''}
               <div class="place-times">${timeRows}</div>
               <div class="place-links">
                 <a class="lnk lnk-maps" href="${mapsUrl(p)}" target="_blank" rel="noopener">Maps</a>
@@ -715,9 +925,9 @@
               <div class="journey-panel" id="jp-${p.placeId}"></div>
             </div>
             <div class="metric-col">
-              <div class="metric-big">${Math.round(p.avgT)}</div>
-              <div class="metric-unit">min</div>
-              <div class="metric-sub">max ${Math.round(p.maxT)}m</div>
+              <div class="metric-big">${Math.round(p.maxT)}</div>
+              <div class="metric-unit">max min</div>
+              <div class="metric-sub">avg ${Math.round(p.avgT)} min</div>
               <div class="metric-sub">${p.dist.toFixed(1)} km</div>
             </div>
           </div>`;
@@ -726,6 +936,23 @@
 
       document.getElementById('resultsSection').style.display='block';
       document.getElementById('map').scrollIntoView({behavior:'smooth',block:'start'});
+
+      // Load full addresses and photos in background after results are visible
+      places.slice(0,3).forEach(async (p,i)=>{
+        const timeout=new Promise(r=>setTimeout(()=>r(null),4000));
+        const details=await Promise.race([getPlaceDetailsAll(p.placeId),timeout]);
+        if(details){
+          if(details.address) p.displayAddr=details.address;
+          if(details.photo){
+            const img=document.querySelector(`#place-img-${p.placeId}`);
+            if(img){img.src=details.photo;img.style.display='block';}
+            const ph=document.querySelector(`#place-ph-${p.placeId}`);
+            if(ph)ph.style.display='none';
+          }
+          const addr=document.querySelector(`#place-addr-${p.placeId}`);
+          if(addr&&details.address)addr.textContent=details.address;
+        }
+      });
     } catch(e){
       alert('Something went wrong: '+e.message);
     } finally {
